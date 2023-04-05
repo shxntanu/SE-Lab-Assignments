@@ -162,6 +162,7 @@ void CDLL::cancel()
         cout<<"\nSeat Number out of range!"<<endl;
 }
 
+
 void CDLL::availability()
 {
     int no;
