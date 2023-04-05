@@ -64,9 +64,9 @@ Write a python program to store first year percentage of students in array. Writ
 sorting array of floating point numbers in ascending order using quick sort and display top
 five scores.
 
-### Question 7: 
+<h3><a href="https://github.com/shxntanu/SE-Lab-Assignments/blob/DSL/Q7a_CDLL.cpp">Question 7a:</a></h3> 
 
-1. The ticket booking system of Cinemax theater has to be implemented using C++ program.
+The ticket booking system of Cinemax theater has to be implemented using C++ program.
 There are 10 rows and 7 seats in each row. Doubly circular linked list has to be maintained
 to keep track of free seats at rows. Assume some random booking to start with. Use array to
 store pointers (Head pointer) to each row. On demand 
@@ -74,11 +74,13 @@ store pointers (Head pointer) to each row. On demand
    - The seats are to be booked 
    - The booking can be cancelled.
 
-2. Write C++ program for storing binary number using doubly linked lists. Write functions - 
+<h3><a href="https://github.com/shxntanu/SE-Lab-Assignments/blob/DSL/Q7b_Binary.cpp">Question 7b:</a></h3>
+
+Write C++ program for storing binary number using doubly linked lists. Write functions - 
    - To compute 1‘s and 2‘s complement 
    - Add two binary numbers
 
-### Question 8: 
+<h3><a href="https://github.com/shxntanu/SE-Lab-Assignments/blob/DSL/Q8_LL.cpp">Question 8:</a></h3>
 
 Write C++ program for storing appointment schedule for day. Appointments are booked
 randomly using linked list. Set start and end time and min and max duration for visit slot.
@@ -89,13 +91,13 @@ Write functions for -
    - Sort list based on time
    - Sort list based on time using pointer manipulation
 
-### Question 9: 
+<h3><a href="https://github.com/shxntanu/SE-Lab-Assignments/blob/DSL/Q9_Stack.cpp">Question 9:</a></h3>
 
 In any language program mostly syntax error occurs due to unbalancing delimiter such as
 (),{},[]. Write C++ program using stack to check whether given expression is well
 parenthesized or not.
 
-### Question 10:
+<h3><a href="https://github.com/shxntanu/SE-Lab-Assignments/blob/DSL/Q10_PostfixEval.cpp">Question 10:</a></h3>
 
 Implement C++ program for expression conversion as infix to postfix and its evaluation
 using stack based on given conditions: 
@@ -103,14 +105,14 @@ using stack based on given conditions:
 - Input Postfix expression must be in a desired format. 
 - Only '+', '-', '*' and '/' operators are expected.
 
-### Question 11:
+<h3><a href="https://github.com/shxntanu/SE-Lab-Assignments/blob/DSL/Q11_Queue.cpp">Question 11:</a></h3>
 
 Queues are frequently used in computer programming, and a typical example is the creation
 of a job queue by an operating system. If the operating system does not use priorities, then
 the jobs are processed in the order they enter the system. Write C++ program for simulating
 job queue. Write functions to add job, display job and delete job from queue.
 
-### Question 12:
+<h3><a href="https://github.com/shxntanu/SE-Lab-Assignments/blob/DSL/Q12_PriorityQueue.cpp">Question 12:</a></h3>
 
 Write program to implement a priority queue in C++ using an order list/array to store the
 items in the queue. Create a class that includes the data items (which should be template)
@@ -118,7 +120,7 @@ and the priority (which should be int). The order list/array should contain thes
 operator <= overloaded so that the items with highest priority appear at the beginning of the
 list/array (which will make it relatively easy to retrieve the highest item.)
 
-### Question 13:
+<h3><a href="https://github.com/shxntanu/SE-Lab-Assignments/blob/DSL/Q13_DEQueue.cpp">Question 13:</a></h3>
 
 A double-ended queue (deque) is a linear list in which additions and deletions may be made
 at either end. Obtain a data representation mapping a deque into a one dimensional array.
