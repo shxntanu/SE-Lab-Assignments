@@ -7,6 +7,7 @@ for i in sen_list:
         max = len(i)
         global word
         word = i
+        
 print("The longest word in '{}' is '{}' of length '{}' characters".format(sen,word,max))
 
 occurrence = sen.count(input("Enter the character whose frequency of occurrence you want to check: "))
