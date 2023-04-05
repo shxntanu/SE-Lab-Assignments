@@ -1,1 +1,1 @@
-# SE-Lab-Assignments
+# Second Year Computer Engineering Lab Assignments
