@@ -4,7 +4,7 @@ Codes of the Assignments in the DSL Lab Manual of SPPU Second Year Computer Engi
 
 **Problem Statements:** 
 
-<a href="https://github.com/shxntanu/SE-Lab-Assignments/blob/DSL/Q1_List.py">Question 1:</a>
+<a href="https://github.com/shxntanu/SE-Lab-Assignments/blob/DSL/Q1_List.py"><h3>Question 1:</h3></a>
 
 In second year computer engineering class, group A student’s play cricket, group B students
 play badminton and group C students play football. Write a Python program using functions
