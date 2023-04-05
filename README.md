@@ -2,10 +2,8 @@
 
 ## Semester 3:
 
-<a href="https://github.com/shxntanu/SE-Lab-Assignments/tree/DSL">Data Structures Lab (DSL)</a>
-
-
-<a href="https://github.com/shxntanu/SE-Lab-Assignments/tree/OOPCGL">OOP and Computer Graphics Lab (OOPCGL)</a>
+1. [Data Structures Lab (DSL)](https://github.com/shxntanu/SE-Lab-Assignments/tree/DSL)
+2. [OOP and Computer Graphics Lab](https://github.com/shxntanu/SE-Lab-Assignments/tree/OOPCGL)
 
 ## Semester 4:
 
