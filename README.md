@@ -17,7 +17,7 @@ to compute following: -
 
 (Note- While realizing the group, duplicate entries should be avoided, Do not use SET built-in functions)
 
-### Question 2:
+<h3><a href="https://github.com/shxntanu/SE-Lab-Assignments/blob/DSL/Q2_StringOps.py">Question 2:</a></h3>
 
 Write a Python program to compute following operations on String:
 
@@ -29,7 +29,7 @@ Write a Python program to compute following operations on String:
 
 (Do not use string built-in functions)
 
-### Question 3: 
+<h3><a href="https://github.com/shxntanu/SE-Lab-Assignments/blob/DSL/Q3_Matrix.py">Question 3:</a></h3>
 
 Write a python program to compute following computation on matrix:
 
@@ -38,7 +38,7 @@ Write a python program to compute following computation on matrix:
 3. Multiplication of two matrices 
 4. Transpose of a matrix
 
-### Question 4: 
+<h3><a href="https://github.com/shxntanu/SE-Lab-Assignments/blob/DSL/Q4_Searching.py">Question 4:</a></h3>
 
 1. Write a python program to store roll numbers of student in array who attended training
 program in random order. Write function for searching whether particular student attended
@@ -48,7 +48,7 @@ training program or not, using Linear search and Sentinel search.
 program in sorted order. Write function for searching whether particular student attended
 training program or not, using Binary search and Fibonacci search
 
-### Question 5: 
+<h3><a href="https://github.com/shxntanu/SE-Lab-Assignments/blob/DSL/Q5_Sorting.py">Question 5:</a></h3>
 
 Write a python program to store second year percentage of students in array. Write function
 for sorting array of floating-point numbers in ascending order using - 
@@ -58,7 +58,7 @@ for sorting array of floating-point numbers in ascending order using -
 
 And display top five scores
 
-### Question 6: 
+<h3><a href="https://github.com/shxntanu/SE-Lab-Assignments/blob/DSL/Q6_QuickSort.py">Question 6:</a></h3>
 
 Write a python program to store first year percentage of students in array. Write function for
 sorting array of floating point numbers in ascending order using quick sort and display top
