@@ -1,3 +1,5 @@
+; MACROS
+
 %macro IO 4                           ; Macro for Input and Output
 mov rax , %1
 mov rdi , %2
