@@ -46,3 +46,9 @@ hashing technique: separate chaining using linked list Data: Set of
 (key, value) pairs, Keys are mapped to values, Keys must be
 comparable, and Keys must be unique. Standard Operations: Insert
 (key, value), Find(key), Delete(key)
+
+## Question 6
+
+Represent a given graph using adjacency matrix/list to perform DFS and using adjacency list to 
+perform BFS. Use the map of the area around the college as the graph. 
+Identify the prominent land marks as nodes and perform DFS and BFS on that.
