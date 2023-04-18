@@ -183,8 +183,37 @@ class Graph {
         }
     }
 
+    void outDegree() {
+        Node *currentNode = head;
+        while( currentNode != nullptr ) {
+            int count;
+            Node *neighbour = currentNode;
+            while( neighbour != nullptr ) {
+                count++;
+                neighbour = neighbour->next;
+            }
+            cout<< currentNode->name << "\t" << count <<endl;
+            currentNode = currentNode->down;
+        }
+    }
+
     void inDegree() {
-        
+        Node *currentNode = head;
+        while( currentNode != nullptr ) {
+            int count;
+            Node *temp = currentNode->down;
+            while( temp != nullptr ) {
+                Node *neighbour = temp->next;
+                while( neighbour != nullptr ) {
+                    if( neighbour->name == currentNode->name ) 
+                        count++;
+                    neighbour = neighbour->next;
+                }
+                temp = temp->down;
+            }
+            cout<< currentNode->name << "\t" << count <<endl;
+            currentNode = currentNode->down;
+        }
     }
 
 };
