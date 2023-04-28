@@ -215,5 +215,22 @@ class Graph {
             currentNode = currentNode->down;
         }
     }
-
 };
+
+int main () {
+    Graph g;
+    g.addNode( "A", "B" );
+    g.addNode( "A", "C" );
+    g.addNode( "A", "D" );
+    g.addNode( "B", "C" );
+    g.addNode( "B", "D" );
+    g.addNode( "C", "D" );
+    g.addNode( "C", "E" );
+    g.addNode( "D", "E" );
+
+    cout<<"Adjacency List"<<endl;
+    g.printAL();
+    g.inDegree();
+
+    return 0;
+}
