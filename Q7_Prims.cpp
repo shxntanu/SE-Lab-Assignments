@@ -8,12 +8,7 @@ want a set of lines that connects all your offices with a minimum total
 cost. Solve the problem by suggesting appropriate data structures.
 */
 
-//#include<bits/stdc++.h>
-#include <iostream>
-#include <string>
-#include <vector>
-#include <map>
-#include <limits>
+#include<bits/stdc++.h>
 using namespace std;
 const int max = INT_MAX;
 
