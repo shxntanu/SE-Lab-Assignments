@@ -1,4 +1,4 @@
-# SPPU MPL Assignments
+# SPPU Microprocessor Lab Assignments
 
 ## Question 1
 
