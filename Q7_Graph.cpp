@@ -77,21 +77,7 @@ class Graph {
         adjMatix[cities[city2]][cities[city1]] = dist;
     }
     
-//    int selectMinVertex(vector<int>& value,vector<bool>& setMST, Graph g)
-//    {
-//        int minimum = INT_MAX;
-//        int vertex = -1;
-//        for(int i=0;i<g.nodeCount;++i)
-//        {
-//            if(setMST[i]==false && value[i]<minimum)
-//            {
-//                vertex = i;
-//                minimum = value[i];
-//            }
-//        }
-//        return vertex;
-//    }
-    
+    // minimum_key() method for finding the vertex that has minimum key-value and that is not added in MST yet
     int minimum_key(int k[], int mst[])
     {
         int minimum  = INT_MAX, min,i;
@@ -105,8 +91,12 @@ class Graph {
     
     void prim(Graph g) {
         int n = g.nodeCount;
+        
+        // create parnet[] array of size equal to total number of vertices for storing the MST
         int parent[n];
+        // create k[] array for selecting an edge having minimum weight
         int k[n];
+        // create mst[] array for seeing if a vertex has been added to MST or not
         int mst[n];
         
         for (int i = 0; i < n; i++)
@@ -120,7 +110,7 @@ class Graph {
         
         for (int count = 0; count < n-1; count++)
         {
-            /*select the vertex having minimum key and that is not added in the MST yet from the set of vertices*/
+            // select the vertex having minimum key and that is not added in the MST yet from the set of vertices
             int edge = minimum_key(k, mst);
             mst[edge] = 1;
             for (int v = 0; v < n; v++)
