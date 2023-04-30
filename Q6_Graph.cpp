@@ -2,7 +2,6 @@
 Represent a given graph using adjacency matrix/list to perform DFS and using adjacency list to 
 perform BFS. Use the map of the area around the college as the graph. 
 Identify the prominent land marks as nodes and perform DFS and BFS on that.
-
 Functions to be implemented:
 1. Read graph
 2. Display adjacency list
@@ -18,190 +17,99 @@ using namespace std;
 class Node {
     public:
     string name;
-    Node* next = nullptr ;
-    Node* down = nullptr ;
+    Node *next;
+    Node *down;
+
+    Node( string n = "" ) {
+        name = n;
+        next = nullptr;
+        down = nullptr;
+    }
 };
 
-class Graph {
-
+class Graph
+{
     Node *head = nullptr;
 
-    void add( string node1, string node2 ) {
-
+    void add( string NodeA, string NodeB ) {
+        // If adjacency list is empty
         if( head == nullptr ) {
-            Node *newNode1 = new Node();
-            Node *newNode2 = new Node();
-            newNode1->name = node1;
-            newNode2->name = node2;
-
-            newNode1->next = newNode2;
-            head = newNode1;
+            Node *node1 = new Node( NodeA );
+            Node *node2 = new Node( NodeB );
+            head = node1;
+            node1->next = node2;
         }
-        
+
         else {
             Node *currentNode = head;
             Node *prevNode = nullptr;
             bool found = false;
-
             while( currentNode != nullptr ) {
-                if( currentNode->name == node1 ) {
+
+                // If NodeA is found
+                if( currentNode->name == NodeA ) {
                     found = true;
-                    Node *currentNeighbour = currentNode;
-                    while( currentNeighbour->next != nullptr )
-                        currentNeighbour = currentNeighbour->next;
-                    Node *newNode = new Node();
-                    newNode->name = node2;
-                    currentNeighbour->next = newNode;
+                    Node *currentListNode = currentNode;
+                    while( currentListNode->next != nullptr )
+                        currentListNode = currentListNode->next;
+                    Node *newNode = new Node( NodeB );
+                    currentListNode->next = newNode;
                     break;
                 }
                 prevNode = currentNode;
                 currentNode = currentNode->down;
+
             }
-            if( !found ) {
-                Node *newNode1 = new Node();
-                Node *newNode2 = new Node();
-                newNode1->name = node1;
-                newNode2->name = node2;
-                currentNode->down = newNode1;
+
+            // If NodeA is not found
+            if(!found) {
+                Node *newNode1 = new Node( NodeA );
+                Node *newNode2 = new Node( NodeB );
+                prevNode->down = newNode1;
                 newNode1->next = newNode2;
             }
         }
     }
 
-    void printLL( Node* headNode ) {
-        Node* currentNode = headNode ;
-        while( currentNode != nullptr ) {
-            // cout.width(5);
-            cout << currentNode->name << "->" ;
-            currentNode = currentNode -> next ;
-        }
-    }
-
     public:
 
-    void addNode( string node1, string node2 ) {
-        add( node1, node2 );
-        add( node2, node1 );
+    void addNode( string NodeA, string NodeB ) {
+        add( NodeA, NodeB );
+        add( NodeB, NodeA );
     }
 
-    void printAL() {
-        Node *currentNode = head;
-        while( currentNode != nullptr ) {
-            printLL( currentNode );
+    void print() {
+        Node *currentArrayNode = head;
+        while( currentArrayNode != nullptr ) {
+            Node *currentListNode = currentArrayNode;
+            while( currentListNode != nullptr ) {
+                cout<< currentListNode->name << " -> ";
+                currentListNode = currentListNode->next;
+            }
             cout<<endl;
-            currentNode = currentNode->down;
+            currentArrayNode = currentArrayNode->down;
         }
     }
 
-    void BFS( string startingNode ) {
-        queue<string> myQueue;
-        vector<string> visited;
-        visited.push_back( startingNode );
-        myQueue.push( startingNode );
-        while ( true ) {
-
-            // if Queue is not empty, pop an element
-            // and assign its non-visited neighbours
-            // to the visited list
-            if( !myQueue.empty() ) {
-                string poppedNode = myQueue.front();
-                myQueue.pop();
-                startingNode = poppedNode;
-                cout<< startingNode << " ";
+    void printOutDegrees() {
+        Node *currentArrayNode = head;
+        while(currentArrayNode != nullptr ) {
+            Node *currentListNode = currentArrayNode;
+            int degree = 0;
+            while( currentListNode != nullptr ) {
+                degree++;
+                currentListNode = currentListNode->next;
             }
-            else {
-                cout<<endl;
-                break;
-            }
-
-            Node *currentNode = head;
-            bool found = false;
-            while( currentNode != nullptr ) {
-                if( currentNode->name == startingNode ) {
-                    found = true;
-                    Node *currentNeighbour = currentNode->next;
-                    while( currentNeighbour != nullptr ) {
-
-                        // if Neighbour has not been visited
-                        if( find( visited.begin(), visited.end(), currentNeighbour->name ) == visited.end() ) {
-                            myQueue.push( currentNeighbour->name );
-                            visited.push_back( currentNeighbour->name );
-                        }
-
-                        currentNeighbour = currentNeighbour->next;
-                    }
-                    break;
-                }
-                currentNode = currentNode->down;
-            }
-
-            if( !found ) {
-                cout<<"Starting node doesn't exist in the graph"<<endl;
-            }
+            cout<< currentArrayNode->name << " : " << degree<<endl;
+            currentArrayNode = currentArrayNode->down;
         }
     }
 
-    void DFS( string startingNode ) {
-        stack<string> myStack;
-        vector<string> visited;
-        myStack.push( startingNode );
-        visited.push_back( startingNode );
-        while( true ) {
-
-            if( !myStack.empty() ) {
-                string poppedNode = myStack.top();
-                myStack.pop();
-                startingNode = poppedNode;
-                cout<< startingNode << " ";
-            }
-            else {
-                cout<<endl;
-                break;
-            }
-
-            Node *currentNode = head;
-            bool found = false;
-            while( currentNode != nullptr ) {
-                if( currentNode->name == startingNode ) {
-                    found = true;
-                    Node *currentNeighbour = currentNode->next;
-                    while( currentNeighbour != nullptr ){
-                        if( find( visited.begin(), visited.end(), currentNeighbour->name ) == visited.end() ) {
-                            myStack.push( currentNeighbour->name );
-                            visited.push_back( currentNeighbour->name );
-                        }
-                        currentNeighbour = currentNeighbour->next;
-                    }
-                    break;
-                }   
-            }
-
-            if( !found ) {
-                cout<<"Starting node doesn't exist in the list"<<endl;
-                break;
-            }
-        }
-    }
-
-    void outDegree() {
+    void printInDegrees() {
         Node *currentNode = head;
         while( currentNode != nullptr ) {
-            int count;
-            Node *neighbour = currentNode;
-            while( neighbour != nullptr ) {
-                count++;
-                neighbour = neighbour->next;
-            }
-            cout<< currentNode->name << "\t" << count <<endl;
-            currentNode = currentNode->down;
-        }
-    }
-
-    void inDegree() {
-        Node *currentNode = head;
-        while( currentNode != nullptr ) {
-            int count;
-            Node *temp = currentNode->down;
+            int count = 0;
+            Node *temp = head;
             while( temp != nullptr ) {
                 Node *neighbour = temp->next;
                 while( neighbour != nullptr ) {
@@ -211,26 +119,107 @@ class Graph {
                 }
                 temp = temp->down;
             }
-            cout<< currentNode->name << "\t" << count <<endl;
+            cout<< currentNode->name << "\t : \t" << count <<endl;
             currentNode = currentNode->down;
+        }
+    }
+
+    void BFS ( string node ) {
+        queue<string> Queue;
+        vector<string> visited;
+        Queue.push( node );
+        visited.push_back( node );
+        while( true ) {
+
+            if( !Queue.empty() ) {
+                node = Queue.front();
+                Queue.pop();
+                cout<< node << " ";
+            }
+            else {
+                cout<<endl;
+                break;
+            }
+
+            Node *currentNode = head;
+            bool found = false;
+            while ( currentNode != nullptr ) {
+                if( currentNode->name == node ) {
+                    found = true;
+                    Node *currentListNode = currentNode->next;
+                        while( currentListNode != nullptr ){    
+                            if( find( visited.begin(), visited.end(), currentListNode->name ) == visited.end() ) {
+                            visited.push_back( currentListNode->name );
+                            Queue.push( currentListNode->name );
+                        }
+                        currentListNode = currentListNode->next;
+                    }
+                    break;
+                }
+                currentNode = currentNode->down;
+            }
+            if( !found ) {
+                cout<< "Given node not in the graph" <<endl;
+                return;
+            }
+        }
+    }
+
+    void DFS ( string node ) {
+        stack<string> Stack;
+        vector<string> visited;
+        Stack.push( node );
+        visited.push_back( node );
+        while( true ) {
+            if( !Stack.empty() ) {
+                node = Stack.top();
+                Stack.pop();
+                cout<< node << " ";
+            }
+            else {
+                cout<<endl;
+                break;
+            }
+
+            Node *currentNode = head;
+            bool found = false;
+            while ( currentNode != nullptr ) {
+                if( currentNode->name == node ) {
+                    found = true;
+                    Node *currentListNode = currentNode->next;
+                    while( currentListNode != nullptr ) {
+                        if( find( visited.begin(), visited.end(), currentListNode->name ) == visited.end() ) {
+                            Stack.push( currentListNode->name );
+                            visited.push_back( currentListNode->name );
+                        }
+                        currentListNode = currentListNode->next;
+                    }
+                    break;
+                }
+                currentNode = currentNode->down;
+            }
+            if( !found ) {
+                cout<< "Given node doesn't exist in the graph" <<endl;
+                return;
+            }
         }
     }
 };
 
-int main () {
-    Graph g;
-    g.addNode( "A", "B" );
-    g.addNode( "A", "C" );
-    g.addNode( "A", "D" );
-    g.addNode( "B", "C" );
-    g.addNode( "B", "D" );
-    g.addNode( "C", "D" );
-    g.addNode( "C", "E" );
-    g.addNode( "D", "E" );
-
-    cout<<"Adjacency List"<<endl;
-    g.printAL();
-    g.inDegree();
-
+int main() {
+    Graph g ; 
+    g.addNode( "Katraj" , "PICT" ) ;
+    g.addNode( "Bharti" , "Katraj" ) ; 
+    g.addNode( "Bharti" , "PICT" ) ;
+    g.addNode( "Katraj" , "SKNCOE" ) ; 
+    g.addNode( "PICT" , "SKNCOE" ) ;
+    g.addNode( "SKNCOE" , "Temple" ) ; 
+    g.addNode( "Temple" , "Katraj" ) ; 
+    g.addNode( "Temple" , "Kondhwa" ) ; 
+    g.print() ; 
+    g.printInDegrees();
+    g.printOutDegrees();
+    g.BFS( "Katraj" ) ; 
+    g.DFS( "Katraj" ) ;
     return 0;
 }
