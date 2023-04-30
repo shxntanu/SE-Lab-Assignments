@@ -13,6 +13,7 @@ cost. Solve the problem by suggesting appropriate data structures.
 #include <string>
 #include <vector>
 #include <map>
+#include <limits>
 using namespace std;
 const int max = INT_MAX;
 
