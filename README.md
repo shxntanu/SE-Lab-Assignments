@@ -1,4 +1,4 @@
-# SPPU DSAL Assignments
+# SPPU Data Structures and Algorithms Assignments
 
 Programming Assignments of Savitribai Phule Pune University (SPPU), Second Year (SE) Computer Engineering (CE), Data Structures and Algorithms Lab (DSAL) 2022-23.
 
