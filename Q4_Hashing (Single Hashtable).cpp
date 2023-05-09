@@ -52,7 +52,7 @@ class Hashtable
         int n = sizeof(clientName)/sizeof(clientName[0]);
         int sum=0;
         for(int i=0;i<n;i++)
-            sum+=i;
+            sum+=int(clientName[i]);
         return sum%n;
     }
 
