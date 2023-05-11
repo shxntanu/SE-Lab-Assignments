@@ -59,6 +59,8 @@ public:
     void ipreorder(Node *root);
     void iinorder(Node *root);
     
+    void clone(Node *root);
+    
     int maxDepth(Node* root);
     int getLeafCount(Node *root);
     int getInternalCount(Node *root);
@@ -67,11 +69,6 @@ public:
     BinaryTree()
     {
         root = buildTree(root);
-    }
-    
-    BinaryTree(BinaryTree &t)
-    {
-        this->root = t.root;
     }
 };
 
@@ -345,4 +342,16 @@ void BinaryTree::deleteTree(Node* root)
 
     cout << "\n Deleting node: " << root->data;
     delete root;
+}
+
+Node* BinaryTree::clone(Node *root) {
+    if(root == nullptr)
+        return nullptr;
+
+    Node *root_copy = new Node(root->data);
+
+    root_copy->right = clone(root_copy->right);
+    root_copy->left = clone(root_copy->left);
+
+    return root_copy;
 }
