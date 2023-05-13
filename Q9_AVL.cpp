@@ -19,7 +19,7 @@ using namespace std ;
 struct Node {
     int key ;
     string value ;
-    int height = 1 ;       // Default height of a node w.r.t its parent would be one
+    int height = 1 ;
     Node* left = nullptr ;
     Node* right = nullptr ;
 };
