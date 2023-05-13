@@ -9,11 +9,11 @@
  complexity for finding a keyword.
  */
 
-// #include <bits/stdc++.h>
-#include <iostream>
-#include <queue>
-#include <cmath>
-#include <cstring>
+// #include <iostream>
+// #include <queue>
+// #include <cmath>
+// #include <cstring>
+#include <bits/stdc++.h>
 using namespace std ;
 
 struct Node {
