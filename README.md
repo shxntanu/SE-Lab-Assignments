@@ -60,3 +60,10 @@ to connect them up with each other; and the phone company charges
 different amounts of money to connect different pairs of cities. You
 want a set of lines that connects all your offices with a minimum total
 cost. Solve the problem by suggesting appropriate data structures.
+
+## Question 9 
+
+A dictionary stores keywords and its meanings. Provide facility for adding new keywords, deleting keywords,
+ updating values of an entry. Provide facility to display whole data in sorted Ascending / Descending order.
+ Also find out how many comparisons are required for finding any entry. Use height balance tree and find
+ complexity for finding a keyword.
