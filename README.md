@@ -67,3 +67,8 @@ A dictionary stores keywords and its meanings. Provide facility for adding new k
  updating values of an entry. Provide facility to display whole data in sorted Ascending / Descending order.
  Also find out how many comparisons are required for finding any entry. Use height balance tree and find
  complexity for finding a keyword.
+ 
+## Question 10 
+
+Implement the Heap Sort algorithm demonstrating the Heap / Shell data structure with 
+modularity of programming language.
