@@ -78,3 +78,17 @@ A dictionary stores keywords and its meanings. Provide facility for adding new k
 
 Implement the Heap Sort algorithm demonstrating the Heap / Shell data structure with 
 modularity of programming language.
+
+## Question 11
+
+Department maintains a student information. The file contains roll
+number, name, division and address. Allow user to add, delete
+information of student. Display information of particular student. If
+record of student does not exist an appropriate message is displayed. If
+it is, then the system displays the student details. Use Sequential File
+to maintain the data.
+
+## Question 12
+
+Implementation of a direct access file -Insertion and deletion of a
+record from a Direct Access File.
