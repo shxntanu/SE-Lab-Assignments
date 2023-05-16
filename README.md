@@ -61,6 +61,12 @@ different amounts of money to connect different pairs of cities. You
 want a set of lines that connects all your offices with a minimum total
 cost. Solve the problem by suggesting appropriate data structures.
 
+## Question 8
+
+Given sequence k = k1 <k2 < … < kn of n sorted keys, with a search
+probability pi for each key ki . Build the Binary search tree that has
+the least search cost given the access probability for each key.
+
 ## Question 9 
 
 A dictionary stores keywords and its meanings. Provide facility for adding new keywords, deleting keywords,
