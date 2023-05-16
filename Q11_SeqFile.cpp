@@ -53,16 +53,16 @@ class Seq_File {
     }
 
     Seq_File(char F[]) {
-		ofstream  File;
-		strcpy(File_Name,F);
-		File.open(F);
-        if(File)
-        {
-            cout<<"\nFile opened Successfully";
-            File.close();
-        }
-        else cout<<"\nFile creation Error";   
-	}	
+	ofstream  File;
+	strcpy(File_Name,F);
+	File.open(F);
+	if(File)
+	{
+	    cout<<"\nFile opened Successfully";
+	    File.close();
+	}
+	else cout<<"\nFile creation Error";   
+    }	
 
     void Create() {
         ofstream  File;
@@ -121,14 +121,14 @@ class Seq_File {
     }
 
     void Modify(int Roll) {
-		ifstream File;
-		ofstream Temp;
-		Student S;
-		int Flag=0;
-		File.open(File_Name);
-		Temp.open("Temp.Txt");
-		File.read(reinterpret_cast<char*>(&S),sizeof(S));
-		while(!File.eof()) {
+	ifstream File;
+	ofstream Temp;
+	Student S;
+	int Flag=0;
+	File.open(File_Name);
+	Temp.open("Temp.Txt");
+	File.read(reinterpret_cast<char*>(&S),sizeof(S));
+	while(!File.eof()) {
             if(Roll==S.return_Roll()) {
                 S.put_Data();
                 cout<<"\n Enter data to modify";
@@ -156,30 +156,35 @@ int main() {
 	Seq_File  sFile(F);
 
 	do {
-        cout<<"\n1: Create Database\n2: Display Database\n3: Add a record\n4: Delete a record\n5: Modify a record\nEnter your choice: ";
-	    cin>>Choice;
+	cout<<"\n1: Create Database\n2: Display Database\n3: Add a record\n4: Delete a record\n5: Modify a record\nEnter your choice: ";
+		cin>>Choice;
 
-	    switch(Choice) {
-            case 1:
-                sFile.Create();
-                break;
-            case 2:               		                
-                sFile.Display();
-                break;
-            case 3:
-                sFile.Add();
-                break;
-            case 4:
-                cout<<"\nEnter Roll No to delete";
-                cin>>R;
-                sFile.Remove( R);
-                break;
-            case 5:                                                                
-                cout<<"\nEnter Roll No to Modify";
-                cin>>R;
-                sFile.Modify( R);
-                break;
-	    }
+		switch( Choice ) {
+				
+		case 1:
+			sFile.Create();
+			break;
+				
+		case 2:               		                
+			sFile.Display();
+			break;
+				
+		case 3:
+			sFile.Add();
+			break;
+				
+		case 4:
+			cout<<"\nEnter Roll No to delete";
+			cin>>R;
+			sFile.Remove( R );
+			break;
+				
+		case 5:                                                                
+			cout<<"\nEnter Roll No to Modify";
+			cin>>R;
+			sFile.Modify( R);
+			break;
+		}
     }
 
     while(Choice<6);	            
