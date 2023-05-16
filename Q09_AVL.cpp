@@ -70,13 +70,13 @@ class AVLTree {
     }
     
     Node* RLRotation( Node* node ) {
-        node -> right = RRRotation( node -> right ) ;
-        return LLRotation( node ) ;
+        node -> right = LLRotation( node -> right ) ;
+        return RRRotation( node ) ;
     }
 
     Node* LRRotation( Node* node ) {
-        node -> left = LLRotation( node -> left ) ;
-        return RRRotation( node ) ;
+        node -> left = RRRotation( node -> left ) ;
+        return LLRotation( node ) ;
     }
     
     Node* balance( Node* node ) {
