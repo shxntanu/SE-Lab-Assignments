@@ -14,14 +14,14 @@ class Student {
     int Roll_No;
     public:
 
-    Student(){ 
+    Student() { 
         Name[0]='\0';
         Roll_No=-1;
     }
 
     void get_Data() {
-        cout<<"\nEnter Student Data";
-        cout<<"\nName";cin>>Name;
+        cout<<"\nEnter Student Data"<<endl;
+        cout<<"\nName: ";cin>>Name;
         cout<<"\nRoll Number: ";cin>>Roll_No;
     }
 
@@ -76,12 +76,12 @@ class Seq_File {
     void Display() {
         ifstream  File;
         Student S;
-        File.open(File_Name);
+        File.open( File_Name );
         cout<<"\nRoll No\t Student Name";
-        File.read(reinterpret_cast<char*>(&S),sizeof(S));
+        File.read( reinterpret_cast<char*>(&S) , sizeof(S) );
         while(!File.eof()) {
             S.put_Data();
-            File.read(reinterpret_cast<char*>(&S),sizeof(S));
+            File.read( reinterpret_cast<char*>(&S) , sizeof(S) );
         }
         File.close(); 
     }
@@ -89,7 +89,7 @@ class Seq_File {
     void Add() {
         ofstream  File;
         Student S;
-        File.open(File_Name,ios::app);
+        File.open( File_Name,ios::app );
         S.get_Data();
         File.write(reinterpret_cast<char*>(&S),sizeof(S));
         File.close();
@@ -103,6 +103,7 @@ class Seq_File {
         File.open(File_Name);
         Temp.open("Temp.Txt");
         File.read(reinterpret_cast<char*>(&S),sizeof(S));
+
         while(!File.eof()) {
             if(Roll==S.return_Roll()) {
                 S.put_Data(); Flag=1;
@@ -112,8 +113,10 @@ class Seq_File {
 
             File.read(reinterpret_cast<char*>(&S),sizeof(S));
         }
+
         if(Flag==0) 
-            cout<<"Roll No. "<<Roll<<" does not present \n";      
+            cout<<"Roll No. "<<Roll<<" does not present \n";  
+            
         File.close();
         Temp.close();
         remove(File_Name);
@@ -121,25 +124,28 @@ class Seq_File {
     }
 
     void Modify(int Roll) {
-	ifstream File;
-	ofstream Temp;
-	Student S;
-	int Flag=0;
-	File.open(File_Name);
-	Temp.open("Temp.Txt");
-	File.read(reinterpret_cast<char*>(&S),sizeof(S));
-	while(!File.eof()) {
-            if(Roll==S.return_Roll()) {
-                S.put_Data();
-                cout<<"\n Enter data to modify";
-                S.get_Data();
-                Flag=1;                                
-            }     
-            Temp.write(reinterpret_cast<char*>(&S),sizeof(S));
-            File.read(reinterpret_cast<char*>(&S),sizeof(S));
+        ifstream File;
+        ofstream Temp;
+        Student S;
+        int Flag=0;
+        File.open(File_Name);
+        Temp.open("Temp.Txt");
+        File.read(reinterpret_cast<char*>(&S),sizeof(S));
+
+        while(!File.eof()) {
+                if(Roll==S.return_Roll()) {
+                    S.put_Data();
+                    cout<<"\n Enter data to modify";
+                    S.get_Data();
+                    Flag=1;                                
+                }     
+                Temp.write(reinterpret_cast<char*>(&S),sizeof(S));
+                File.read(reinterpret_cast<char*>(&S),sizeof(S));
         }
+
         if(Flag==0) 
-            cout<<"Roll No. "<<Roll<<" does not present \n";      
+            cout<<"Roll No. "<<Roll<<" does not present \n";  
+                
         File.close();
         Temp.close();
         remove(File_Name);
