@@ -1,168 +1,159 @@
 ; ---------- MACROS ----------
 
 %macro IO 4
-mov rax,%1
-mov rdi,%2
-mov rsi,%3
-mov rdx,%4
-syscall
+    mov rax, %1
+    mov rdi, %2
+    mov rsi, %3
+    mov rdx, %4
+    syscall
 %endmacro
 
-;===========================================
+; ----------- DATA -----------
+
 section .data
-;===========================================
 
-msg1:	db 0x0A,"Your number is  ",0x0A
-len1:	equ $- msg1
-
-
-msg2:	db 0x0A,"Factorial is  ",0x0A
-len2: 	equ $- msg2
-
-onee:   db 0x0A,"Factorial is 00000001",0x0A
-onelen:	equ $- onee
-
-count: 	db 0
-
-enter:	db 0x0A
-
-;===========================================
-section .bss
-;===========================================
-
-num:	resb	1
-fact:	resb	8
-
-dispnum resb 16
-result resb 4
-temp resb 3
-
-;===========================================
-section .text
-;===========================================
-
-global _start;
-_start:
-
-	pop rbx						;POP UNWANTED COMMAND LINE ARGS
-	pop rbx
-	pop rbx
-
-	mov al,byte[rbx]				;REQUIRED ARGUMENT
-	mov [num],al
-
-	IO 1,1,msg1,len1
-	IO 1,1,num,1
-
-	cmp byte[num],31h
-	je one
-	cmp byte[num],30h
-	je one
-
-	mov dl,byte[num]
-	call A2H
-
-
-	xor rax, rax
-	xor rbx, rbx
-	xor rdx, rdx
-
-	mov al, [num]
-	
-	mov bl, 01h
-	call factorial
-	call display
-
-	jmp Exit
-
-	one:							;IF INPUT IS ONE or ZERO
-
-	IO 1,1,onee,onelen
-
-	jmp Exit
-	
-factorial:						;recursive procedure
-    cmp rax, 01h
-    je retcon1
-    push rax			
-    dec rax
+    Prot db "Protected Mode : ",10
+    Protlen equ $-Prot
     
-    call factorial
+    Real db "Real Mode : ",10
+    Reallen equ $-Real
+    
+    msw db "MSW  : "
+    mswlen equ $-msw
+    
+    gdtr db 10,"GDTR : "
+    gdtrlen equ $-gdtr
+    
+    idt db 10,"IDTR : "
+    idtlen equ $-idt
+    
+    tr db 10,"TR : "
+    trlen equ $-tr
+    
+    ld db 10,"LDTR : "
+    ldlen equ $-ld
 
-    retcon:
-        pop rbx
-        mul ebx
-        jmp endpr
+; ----------- BSS -----------
+    
+section .bss
+    gdt resb 8                      ; to hold the value of the base address of GDT
+    gdtli resb 2                    ; to hold the value of the limit field of GDT
+    msw1 resb 2                     ; to hold msw value
+    temp resb 1                     ; to store the value of al register temporarily
+    result1 resq 1      
+    result2 resw 1
+    idt1 resb 8                     ; to hold the value of the base addressm of IDT
+    idtli resb 2                    ; to hold the value of the limit field of IDT
+    ldt resb 2                      ; to hold ldtr value
+    t_r resb 2                      ; to hold the tr value
 
-    retcon1:						;if rax=1 return
-        pop rbx
-        jmp retcon		
-    endpr:
-	ret
-	
-display:					; procedure to convert hex to ascii
-        mov rsi,dispnum+15
-        xor rcx,rcx
-        mov cl,16
+; ----------- TEXT -----------
 
-    cont:
-        xor rdx,rdx
-        xor rbx,rbx
-        mov bl,10h
-        div ebx
-        cmp dl,09h
-        jbe skip
-        add dl,07h
-    skip:
-        add dl,30h
-        mov [rsi],dl
-        dec rsi
-        loop cont
+section .text
+    global _start
 
-        IO 1,1,dispnum,16
+_start:
+    mov rsi,msw1
+    smsw [rsi]
+    mov ax,[rsi]
+    bt ax,0                         ; If PE bit of MSW = 1 then it is protected mode
+    jc next                         ; Print Protected Mode
+    IO 1,1,Real,Reallen             ; Print Real Mode
+    jmp z1
 
-	ret
+next: 
+    IO 1,1,Prot,Protlen 
 
+z1:
+    IO 1,1,msw,mswlen               ; Display the contents of MSW (16 bit)
+    mov ax,word[msw1]
+    call display2 
+    
+    IO 1,1,gdtr,gdtrlen
+    mov rsi,gdt
+    sgdt [rsi]
+    mov rax, qword[rsi]
+    call display1                   ; Display the contents of GDTR (64 bit)
+    
+    mov rsi,gdtli
+    mov ax,word[rsi]
+    call display2                   ; Display the table limit of GDTR (16 bit)
+    
+    IO 1,1,ld,ldlen
+    mov rsi,ldt
+    sldt [rsi]
+    mov rax, [ldt]
+    call display2                   ; Display the contents of LDTR (16 bit)
+    
+    IO 1,1,idt,idtlen
+    mov rsi,idt1
+    sidt [rsi]
+    mov rax, [idt1]
+    call display1                   ; Display the contents of IDTR (64 bit)
+    
+    mov ax,[idtli]
+    call display2                   ; Display the table limit of IDTR (16 bit)
+    
+    IO 1,1,tr,trlen
+    mov rsi,t_r
+    str [rsi]
+    mov rax, [t_r]
+    call display2                   ; Display the contents of TR (16 bit) 
+    
+    ; Exit System Call
+    IO 60,0,0,0 
 
-A2H:								;ASCII TO HEX
+; ----------- PROCEDURE -----------
+    
+display1:
 
-	cmp dl,39h
-	jbe down
-	sub dl,7h
-	down:
-	sub dl,30h
-	mov [num],dl
+        mov bp,16                   ; To display 64 bit no
+    up1:
+        rol ax,4
+        mov qword[result1],rax
+        and al,0fh
+        cmp al,09h
+        jbe next1
+        add al,07h
+    next1:
+        add al,30h
+        mov byte[temp],al
+        IO 1,1,temp,1
+        mov rax,qword[result1]
+        dec bp
+        jnz up1
+        ret
 
-	ret
+display2:  
+                                    
+        mov bp,4                    ; To display 16 bit no (same process as we have done earlier) 
+    up2:
+        rol ax,4
+        mov word[result2],ax
+        and al,0fh
+        cmp al,09h
+        jbe next2
+        add al,07h
+    next2:
+        add al,30h
+        mov byte[temp],al
+        IO 1,1,temp,1
+        mov ax,word[result2]
+        dec bp
+        jnz up2
+        ret
 
-H2A:						;HEX TO ASCII
+; ----------- TO RUN -----------
+    
+; nasm -f elf64 <filename>.asm
+; ld -o <filename> <filename>.o
+; ./<filename>
 
-	mov rax,[fact]
-	mov byte[count],8
+; ----------- OUTPUT -----------
 
-	up:
-	rol eax,4
-	mov dl,al
-	and dl,0Fh
-	cmp dl,09h
-	jbe d1
-	add dl,07h
-	d1:
-	add dl,30h
-	mov [temp],dl
-	push rax
-	IO 1,1,temp,1
-	pop rax
-	dec byte[count]
-	jnz up
-
-	IO 1,1,enter,1
-	ret
-
-Exit:
-
-	mov rax,60
-	mov rdi,0
-	syscall
-
-
+;Protected Mode : 
+;MSW  : 0033
+;GDTR : 007F007F007F007FFFFF
+;LDTR : 0000
+;IDTR : 0FFF0FFF0FFF0FFFFFFF
+;TR : 0040
