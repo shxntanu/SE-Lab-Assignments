@@ -108,7 +108,7 @@ z1:
     ; Exit System Call
     IO 60,0,0,0 
 
-; ----------- PROCEDURE -----------
+; ----------- PROCEDURES -----------
     
 display1:
 
