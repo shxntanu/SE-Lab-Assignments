@@ -1,3 +1,5 @@
+; ---------- MACROS ----------
+
 %macro print 2
 mov  rax , 01  ; sys_write
 mov  rdi , 01  ; stdout - file descriptor
@@ -20,19 +22,19 @@ mov  rdx , 00
 syscall 
 %endmacro
 
-; -------------------------------------------------------
+; ---------- DATA ----------
 
 section .data
 msg1  db  "Enter string: " , 0xA
 len1  equ  $-msg1
 
-; -------------------------------------------------------
+; ---------- BSS ----------
 
 section .bss
 string resb  100   ; Allocate max. 100 bytes for the string
 length resb  2     ; Length is printed in two bytes
 
-; -------------------------------------------------------
+; ---------- TEXT ----------
 
 section .text
 global _start
