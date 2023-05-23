@@ -1,3 +1,7 @@
+/*
+Implementation of a direct access file -Insertion and deletion of a record from a Direct Access File.
+*/
+
 #include <iostream>
 #include <fstream>
 #include <string.h>
