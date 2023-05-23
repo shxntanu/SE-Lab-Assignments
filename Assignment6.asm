@@ -1,3 +1,5 @@
+; ---------- MACROS ----------
+
 %macro IO 4
 mov rax, %1
 mov rdi, %2
@@ -5,6 +7,8 @@ mov rsi, %3
 mov rdx, %4
 syscall
 %endmacro
+
+; ---------- DATA ----------
 
 section .data
 
@@ -30,6 +34,8 @@ len1 equ $-msg1
 res1: db "Result: "
 lres equ $-res1
 
+; ---------- BSS ----------
+
 section .bss
 
 disparr resb 02                                       ; Buffer for displaying results
@@ -41,9 +47,12 @@ t1 resb 02                                            ; Buffer for temporary sto
 rem resb 01                                           ; Buffer for remainder
 res resb 04                                           ; Buffer for the final result
 
+; ---------- TEXT ----------
+
+section .text
+
 global _start
 _start:
-section .text
 
 menu_label:
 IO 1,1,menu,menulen                                   ; Display the menu
@@ -122,6 +131,8 @@ exit:
 mov rax, 60                                           ; Exit system call number
 mov rdi, 0                                            ; Exit with code 0
 syscall
+
+; ---------- PROCEDURES ----------
 
 convert:
 mov rsi, num                                          ; Load the address of 'num' buffer into RSI
