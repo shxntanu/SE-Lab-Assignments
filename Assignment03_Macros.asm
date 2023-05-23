@@ -1,8 +1,10 @@
-%macro print 2
-    mov rax, 01           ;system write call
-    mov rdi, 01           ;standard output descriptor
-    mov rsi, %1           ;source register where data is stored
-    mov rdx, %2           ;size of output
+; ---------- MACROS ----------
+
+%macro IO 4
+    mov rax, %1           ;system write call
+    mov rdi, %2           ;standard output descriptor
+    mov rsi, %3           ;source register where data is stored
+    mov rdx, %4           ;size of output
     Syscall
 %endmacro
 
@@ -27,21 +29,27 @@
     jnz %%label1           ;do again if counter not 0
 %endmacro
 
+; ---------- DATA ----------
+
 section .data
-arr db 11h ,  12h , 15h , 20h , 10h             ;static array of 5 elements
-M1 db "The given array is....." , 10
-L1 equ $-M1
-M2 db 10 , "The largest no in array is...." , 10
-L2 equ $-M2
+    arr db 11h ,  12h , 15h , 20h , 10h             ;static array of 5 elements
+    M1 db "The given array is....." , 10
+    L1 equ $-M1
+    M2 db 10 , "The largest no in array is...." , 10
+    L2 equ $-M2
+
+; ---------- BSS ----------
 
 section .bss
-ans resb 2                   ;a variable of 2 bytes 
-counter resb 1               ;a variable of 1 byte
+    ans resb 2                   ;a variable of 2 bytes 
+    counter resb 1               ;a variable of 1 byte
+
+; ---------- TEXT ----------
 
 section .text
 global _start
 _start:
-    print M1,L1
+    IO 1,1,M1,L1
 
     mov byte[counter], 05         ;set counter to 5 as there are 5 nos in the array
     mov rsi, arr                  ;move arr base address to rsi
@@ -50,9 +58,9 @@ _start:
     mov al, [rsi]                 ;mov data of rsi to al
     push rsi                      ;save register data into the stack
     hex_ascii ans,al              ;hex to ascii conversion of data in al and store it in ans variable
-    print ans,2                   ;print the converted data
+    IO 1,1,ans,2                  ;print the converted data
     mov byte[ans] , 10            ;store a nextline character in ans
-    print ans,1                   ;print 1 character of ans
+    IO 1,1,ans,1                  ;print 1 character of ans
     pop rsi                       ;restore the top of the stack
     inc rsi                       ;increment rsi
     dec byte[counter]             ;decrement counter
@@ -72,9 +80,9 @@ _start:
     dec byte[counter]             ;decrement counter
     jnz start_compare             ;jump to comparison label if counter no 0
     
-    print M2,L2 
+    IO 1,1,M2,L2 
     hex_ascii ans,al              ;do the hex to ascii conversion of accumulator contents and store in ans
-    print ans,2                   ;print the ans
+    IO 1,1,ans,2                  ;print the ans
     
     mov rax, 60                   ;system exit call
     mov rdx, 0                    ;standard exit descriptor
