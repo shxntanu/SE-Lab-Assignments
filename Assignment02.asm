@@ -1,11 +1,17 @@
+; ---------- DATA ----------
+
 section .data
 msg: db "Largest Value: "	; Exit message
 len equ $-msg
 array: db 23h, 07h, 34h, 50h, 0xF8
 cnt: db 04h
 
+; ---------- BSS ----------
+
 section .bss
 ans resb 2
+
+; ---------- TEXT ----------
 
 section .text
 
