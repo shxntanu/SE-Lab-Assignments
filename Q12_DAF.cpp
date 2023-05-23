@@ -11,8 +11,8 @@ using namespace std;
 class HashTable
 {
 private:
-    int empId;
-    int location;
+    int empId;          // Employee ID          
+    int location;       // Location in the file
 
 public:
     HashTable()
@@ -20,12 +20,12 @@ public:
         empId = 0;
         location = 0;
     }
-    void createHT();
-    void showHT();
-    int Hash(int);
-    void insertHT(int, int);
-    int searchHT();
-} HT[10];
+    void createHT();            // Function to initialize the hash table
+    void showHT();              // Function to display the hash table
+    int Hash(int);              // Hash function to determine the index based on the employee ID
+    void insertHT(int, int);    // Function to insert a record into the hash table
+    int searchHT();             // Function to search for a record in the hash table
+} HT[10];                       // Array of HashTable objects representing the hash table
 
 class MyFile
 {
@@ -56,6 +56,11 @@ public:
     void deleteRecord();
 };
 
+/*
+    This function createHT() initializes the hash table by setting 
+    the empId and location values of each element in the HT array to 0.
+*/
+
 void HashTable ::createHT()
 {
     int i, Tablesize = 10;
@@ -65,6 +70,11 @@ void HashTable ::createHT()
         HT[i].location = 0;
     }
 }
+
+/*
+    This function showHT() displays the contents of the hash table. 
+    It iterates through the HT array and prints the index, empId, and location values of each element..
+*/
 
 void HashTable ::showHT()
 {
@@ -76,11 +86,23 @@ void HashTable ::showHT()
     }
 }
 
+/*
+    This function Hash() calculates the hash value for a given empId based on the modulo 
+    operation with the table size (which is 10 in this case). It returns the calculated hash value.
+*/
+
 int HashTable ::Hash(int empId)
 {
     int Tablesize = 10;
     return (empId % Tablesize);
 }
+
+/*
+   This function insertHT() inserts a record into the hash table. It takes the empId and loc (location in the file) 
+   as parameters. It first calculates the hash index for the empId. If the location at the calculated index is empty,
+   it directly inserts the record. If there is a collision (i.e., the location is already occupied), it uses 
+   linear probing to find the next available empty location and inserts the record there.
+*/
 
 void HashTable ::insertHT(int empId, int loc)
 {
@@ -103,6 +125,13 @@ void HashTable ::insertHT(int empId, int loc)
         HT[index].location = loc;
     }
 }
+
+/*
+ This function searchHT() searches for a record in the hash table based on the empId. It prompts the user to 
+ enter an empId to search for. It calculates the hash index for the empId and checks 
+ if the empId at the calculated index matches the input empId. If they match, it returns the corresponding location. 
+ If not, it uses linear probing to find the next index until it finds the matching empId, and then it returns the corresponding location.
+*/
 
 int HashTable ::searchHT()
 {
@@ -127,6 +156,14 @@ int HashTable ::searchHT()
         return HT[index].location;
     }
 }
+
+/*
+ This function writeFile() writes records to the file. It opens the file in output mode (ios::out). 
+ If the file opening fails, it displays an error message. Otherwise, it 
+ prompts the user to enter the number of records to write. 
+ It then takes the employee ID, name, and address for each record from the user and writes them to the file. 
+ It also calls HT.insertHT() to insert the employee ID and file location into the hash table.
+*/
 
 void MyFile ::writeFile()
 {
@@ -154,6 +191,13 @@ void MyFile ::writeFile()
     file.close();
 }
 
+/*
+ This function searchRecord() searches for a record in the file based on the empId. It opens the file in 
+ input mode (ios::in). If the file opening fails, it displays an error message. 
+ Otherwise, it calls HT.searchHT() to search for the empId in the hash table and retrieve the corresponding 
+ file location. It then seeks to that location in the file, reads the record into the buffer, and displays it as the found record.
+*/
+
 void MyFile ::searchRecord()
 {
     file.open(fname, ios::in);
@@ -169,6 +213,13 @@ void MyFile ::searchRecord()
     }
     file.close();
 }
+
+/*
+ This function readFile() reads records from the file and displays them. It opens the file in input mode (ios::in). 
+ If the file opening fails, it displays an error message. Otherwise, it reads records from the file using file.getline() 
+ until the end of the file is reached. It then displays each record with an index number. 
+ After reading the file, it displays the contents of the hash table using HT.showHT().
+*/
 
 void MyFile ::readFile()
 {
