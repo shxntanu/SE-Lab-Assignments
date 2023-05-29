@@ -157,11 +157,11 @@ public:
             Node* poppedNode = Queue.front() ;
             cout << poppedNode -> key << " " ;
             Queue.pop() ;
-            if( poppedNode -> left != nullptr ) {
-                Queue.push( poppedNode -> left ) ;
-            }
             if( poppedNode -> right != nullptr ) {
                 Queue.push( poppedNode -> right ) ;
+            }
+            if( poppedNode -> left != nullptr ) {
+                Queue.push( poppedNode -> left ) ;
             }
         }
         cout<<endl;
