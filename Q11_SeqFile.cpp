@@ -60,16 +60,16 @@ class Seq_File {
     }
 
     Seq_File(char F[]) {
-		ofstream  File;
-		strcpy(File_Name,F);
-		File.open(F);
-		if(File)
-		{
-			cout<<"\nFile opened Successfully";
-			File.close();
-		}
-		else 
-			cout<<"\nFile creation Error";   
+	ofstream  File;
+	strcpy(File_Name,F);
+	File.open(F);
+	if(File)
+	{
+		cout<<"\nFile opened Successfully";
+		File.close();
+	}
+	else 
+		cout<<"\nFile creation Error";   
     }	
 
     void Create() {
