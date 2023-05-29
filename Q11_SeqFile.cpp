@@ -21,8 +21,12 @@ class Student {
 
     void get_Data() {
         cout<<"\nEnter Student Data"<<endl;
-        cout<<"\nName: ";cin>>Name;
-        cout<<"\nRoll Number: ";cin>>Roll_No;
+	    
+        cout<<"\nName: ";
+	cin>>Name;
+	    
+        cout<<"\nRoll Number: ";
+	cin>>Roll_No;
     }
 
     void put_Data() {
