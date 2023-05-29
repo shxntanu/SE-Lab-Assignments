@@ -47,25 +47,29 @@ class Seq_File {
     Seq_File() {
         ofstream  File("Student.txt");
         strcpy(File_Name," Student.txt");
-        cout<<"\nDefault Constructor";
+	    
+        // cout<<"\nDefault Constructor";
+	    
         if(File)
         {
             cout<<"\nFile opened Successfully";
             File.close();
         }
-        else cout<<"\nFile creation Error";   
+        else 
+		cout<<"\nFile creation Error";   
     }
 
     Seq_File(char F[]) {
-	ofstream  File;
-	strcpy(File_Name,F);
-	File.open(F);
-	if(File)
-	{
-	    cout<<"\nFile opened Successfully";
-	    File.close();
-	}
-	else cout<<"\nFile creation Error";   
+		ofstream  File;
+		strcpy(File_Name,F);
+		File.open(F);
+		if(File)
+		{
+			cout<<"\nFile opened Successfully";
+			File.close();
+		}
+		else 
+			cout<<"\nFile creation Error";   
     }	
 
     void Create() {
