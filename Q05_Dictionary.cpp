@@ -5,13 +5,13 @@ hashing technique: separate chaining using linked list Data: Set of
 comparable, and Keys must be unique. Standard Operations: Insert
 (key, value), Find(key), Delete(key)
 
-|---------|
-|   394   | -> abcd -> cdba -> dbca
-|---------|
-|   410   | -> laal -> lala -> aall
-|---------|
-|   548   | -> dwupd -> puddw
-|---------|
+|-------|
+|   4   | -> abcd -> cdba -> dbca
+|-------|
+|   0   | -> laal -> lala -> aall
+|-------|
+|   8   | -> dwupd -> puddw
+|-------|
 
 
 */
