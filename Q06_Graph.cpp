@@ -147,12 +147,12 @@ class Graph
                 if( currentNode->name == node ) {
                     found = true;
                     Node *currentListNode = currentNode->next;
-                        while( currentListNode != nullptr ){    
-                            if( find( visited.begin(), visited.end(), currentListNode->name ) == visited.end() ) {
-                            visited.push_back( currentListNode->name );
-                            Queue.push( currentListNode->name );
-                        }
-                        currentListNode = currentListNode->next;
+                    while( currentListNode != nullptr ){    
+                    if( find( visited.begin(), visited.end(), currentListNode->name ) == visited.end() ) {
+                        visited.push_back( currentListNode->name );
+                        Queue.push( currentListNode->name );
+                    }
+                    currentListNode = currentListNode->next;
                     }
                     break;
                 }
