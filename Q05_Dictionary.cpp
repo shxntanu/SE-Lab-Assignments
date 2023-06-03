@@ -4,6 +4,16 @@ hashing technique: separate chaining using linked list Data: Set of
 (key, value) pairs, Keys are mapped to values, Keys must be
 comparable, and Keys must be unique. Standard Operations: Insert
 (key, value), Find(key), Delete(key)
+
+|---------|
+|   394   | -> abcd -> cdba -> dbca
+|---------|
+|   410   | -> laal -> lala -> aall
+|---------|
+|   548   | -> dwupd -> puddw
+|---------|
+
+
 */
 
 #include <bits/stdc++.h>
