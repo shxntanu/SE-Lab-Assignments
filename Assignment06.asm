@@ -20,7 +20,7 @@ syscall
 
 section .data
 
-arr dw 2710h,03E8H,0064h,000Ah,0001h
+arr dw 2710h,03E8H,0064h,000Ah,0001h                  ; arr: 10000, 1000, 100, 10, 1
 cnt db 05                                             ; Counter for loop iterations
 cnt1 db 05                                            ; Counter for another loop iterations
 
