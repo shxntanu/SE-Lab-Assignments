@@ -57,6 +57,38 @@ class BST
         }
     }
     
+    void iinsert(int x)
+    {
+        if(root == nullptr)
+        {
+            root = new Node(x);
+        }
+
+        else
+        {
+            Node* curr = root, *prev = nullptr;
+            while(curr!= nullptr) {
+                prev = curr;
+
+                // we assume no duplicate entries
+                if( x > curr->data )
+                    curr = curr->right;
+                else
+                    curr = curr->left;
+            }
+
+            if( x > prev->data ) {
+                Node *newNode = new Node(x);
+                prev->right = newNode;
+            }
+
+            else {
+                Node *newNode = new Node(x);
+                prev->left = newNode;
+            }
+        }
+    }
+    
     void display(Node *t) {
         if(t==NULL)
             return;
