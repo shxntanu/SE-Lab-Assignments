@@ -40,24 +40,20 @@ class BST
     }
 
     void insert_node(int d, Node *n) {
-        Node *temp;
-        temp = n;
-        Node *t = new Node(d);
+        if(d > n->data) {
+            if(n->right == nullptr)
+                n->right = new Node(d);
 
-        if(d > temp->data)
-        {
-            if(temp->right == NULL)
-                temp->right = t;
-
-            else insert_node(d, temp->right);
+            else
+                insert_node(d, n->right);
         }
 
-        else
-        {
-            if(temp->left == NULL)
-                temp->left = t;
+        else {
+            if(n->left == nullptr)
+                n->left = new Node(d);
 
-            else insert_node(d, temp->left);
+            else
+                insert_node(d, n->left);
         }
     }
     
