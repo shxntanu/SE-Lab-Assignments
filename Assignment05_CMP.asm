@@ -46,7 +46,7 @@ mov rsi,array                       ; Store pointer of array's first index in rs
 up:
 
 mov rax, qword[rsi]                 ; Move content at current position of rsi in accumulator
-CMP rax, 0                          ; Bit test the MSB of the qword
+CMP rax, 0
 JGE positive                        ; If number is positive jump to positive label
 
 negative:                           ; Else negative number
