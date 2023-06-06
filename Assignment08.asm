@@ -15,41 +15,41 @@
 %endmacro
 
 %macro hex_ascii 2
-    mov rcx, 02                     ;counter
-    mov rbp, %1                     ;converted data stored here
-    mov bl, %2                      ;data stored to be be converted register
+    mov rcx, 02                     ; counter
+    mov rbp, %1                     ; converted data stored here
+    mov bl, %2                      ; data stored to be be converted register
 
-    %%label1:                       ;hex to ascii conversion step 1
-    rol bl, 04                      ;rotate by 4 bits to exchange positions of the digits
-    mov dl, bl                      ;mov this rotated content to dl
-    and dl, 0Fh                     ;and with 0F(0000 1111) to clear the ten's place
-    cmp dl, 09h                     ;compare with 09 and add accordingly
+    %%label1:                       ; hex to ascii conversion step 1
+    rol bl, 04                      ; rotate by 4 bits to exchange positions of the digits
+    mov dl, bl                      ; mov this rotated content to dl
+    and dl, 0Fh                     ; and with 0F(0000 1111) to clear the ten's place
+    cmp dl, 09h                     ; compare with 09 and add accordingly
     jbe %%label2
-    add dl, 07h                     ;if dl is greater than 09 add 37, else add only 30
+    add dl, 07h                     ; if dl is greater than 09 add 37, else add only 30
     
-    %%label2:                       ;hex to ascii conversion step 2
+    %%label2:                       ; hex to ascii conversion step 2
     add dl, 30h        
-    mov [rbp], dl                   ;mov the converted ascii nos to data of rbp i.e storage variable
-    inc rbp                         ;increment the pointer to storage variable
-    dec rcx                         ;decrement counter
-    jnz %%label1                    ;do again if counter not 0
+    mov [rbp], dl                   ; mov the converted ascii nos to data of rbp i.e storage variable
+    inc rbp                         ; increment the pointer to storage variable
+    dec rcx                         ; decrement counter
+    jnz %%label1                    ; do again if counter not 0
 %endmacro
 
 %macro printarray 2                 
-    mov rsi, %1                     ;move array base address to rsi
-    mov byte[counter], %2           ;set counter to size of array
+    mov rsi, %1                     ; move array base address to rsi
+    mov byte[counter], %2           ; set counter to size of array
 
-    %%label:                        ;displaying the array elements in new line
-    mov al, [rsi]                   ;mov data of rsi to al
-    push rsi                        ;save register data into the stack
-    hex_ascii ans,al                ;hex to ascii conversion of data in al and store it in ans variable
-    IO 1,1,ans,2                    ;print the converted data
-    mov byte[ans] , 10              ;store a nextline character in ans
-    IO 1,1,ans,1                    ;print 1 character of ans
-    pop rsi                         ;restore the top of the stack
-    inc rsi                         ;increment rsi
-    dec byte[counter]               ;decrement counter
-    jnz %%label                     ;jump till counter is not zero
+    %%label:                        ; displaying the array elements in new line
+    mov al, [rsi]                   ; mov data of rsi to al
+    push rsi                        ; save register data into the stack
+    hex_ascii ans,al                ; hex to ascii conversion of data in al and store it in ans variable
+    IO 1,1,ans,2                    ; print the converted data
+    mov byte[ans] , 10              ; store a nextline character in ans
+    IO 1,1,ans,1                    ; print 1 character of ans
+    pop rsi                         ; restore the top of the stack
+    inc rsi                         ; increment rsi
+    dec byte[counter]               ; decrement counter
+    jnz %%label                     ; jump till counter is not zero
 %endmacro
 
 %macro exit 0
@@ -108,7 +108,7 @@ _start:
 
 ; ---------- PROCEDURES ----------
 
-blktsfwos:                          ;block transfer without string instructions
+blktsfwos:                          ; block transfer without string instructions
     mov rsi, srcblk                 ; Move the source block address to rsi
     mov rdi, dstblk                 ; Move the destination block address to rdi
     mov byte[counter] ,05           ; Set the counter to 5
