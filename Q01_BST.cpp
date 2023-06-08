@@ -181,22 +181,20 @@ class BST
     void del(Node *node, int key) {
         if(node)
         {
-            Node *current, *prev;
-            current = prev = node;
+            Node *current;
+            current = node;
 
             if(node == NULL)
                 return;
 
             if(key < node->data)
             {
-                prev = current;
                 current = node->left;
                 del(node->left, key);
             }
 
             else if(key > node->data)
             {
-                prev = current;
                 current = node->right;
                 del(node->right, key);
             }
