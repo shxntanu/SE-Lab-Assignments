@@ -137,11 +137,11 @@ class BST {
     }
 
     void getHeight() {
-        cout<<"\nNumber of nodes in the longest path from root are: "<<height(root) + 1<<endl;
+        cout<<"\nNumber of nodes in the longest path from root are: "<<height(root);
     }
 
     void getMinValue() {
-        cout<<"\nMinimum value in the tree: "<<minValueNode(root)->data<<endl;
+        cout<<"\nMinimum value in the tree: "<<minValueNode(root)->data;
     }
 
     void getAscending() {
@@ -170,6 +170,7 @@ int main() {
 
     tree.getAscending();
     tree.getHeight();
+    tree.printSwapped();
 
     BST tree2;
 
@@ -185,6 +186,7 @@ int main() {
 
     tree2.getAscending();
     tree2.getHeight();
+    tree2.search(12);
     
     return 0;
 }
