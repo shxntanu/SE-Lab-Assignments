@@ -14,344 +14,334 @@ following operations on it -
 (implement both recursive and iterative methods)
 */
 
-#include <bits/stdc++.h>
+#include <iostream>
+#include <stack>
+#include <queue>
+#include <unordered_map>
 using namespace std;
 
-class Node
-{
-public:
-    Node *left;
+class Node {
     int data;
-    Node *right;
-    
-    Node(int d)
-    {
-        left = NULL;
-        data = d;
-        right = NULL;
-    }
-    
-    Node()
-    {
-        left = NULL;
+    Node *left, *right;
+
+    Node() {
         data = 0;
-        right = NULL;
+        left = right = nullptr;
     }
+
+    Node(int d) {
+        data = d;
+        left = right = nullptr;
+    }
+
+    friend class BT;
 };
 
-class BinaryTree
-{
-public:
-    Node *root;
-    
-    // Creating the tree
-    Node* buildTree(Node *root);
-    // Swapping all Nodes (Mirroring the tree)
-    void nodeSwap(Node *root);
-    
-    // Recursive Traversal Functions
-    void rpostorder(Node *root);
-    void rpreorder(Node *root);
-    void rinorder(Node *root);
-    
-    // Iterative Traversal Functions
-    void ipostorder(Node *root);
-    void ipreorder(Node *root);
-    void iinorder(Node *root);
-    
-    void clone(Node *root);
-    
-    int maxDepth(Node* root);
-    int getLeafCount(Node *root);
-    int getInternalCount(Node *root);
-    void deleteTree(Node* root);
-    
-    BinaryTree()
-    {
-        root = buildTree(root);
-    }
-};
+class BT {
 
-int main()
-{
-    BinaryTree tree;
-    int flag = 1, choice1;
-    while(flag)
+    Node* buildTree (Node *root) {
+        cout<<"\nData (-1: Null): ";
+        int d;
+        cin>>d;
+        root = new Node(d);
+
+        if(d == -1)
+            return nullptr;
+
+        cout<<"Enter data for left of "<<d<<endl;
+        root->left = buildTree(root->left);
+        cout<<"Enter data for right of "<<d<<endl;
+        root->right = buildTree(root->right);
+    }
+
+    void rswapAllNodes(Node *root)
     {
-        int choice;
-        cout<<"======================================="<<endl;
-        cout<<"||                                   ||"<<endl;
-        cout<<"||       ~~~~~ BST MENU ~~~~~        ||"<<endl;
-        cout<<"||                                   ||"<<endl;
-        cout<<"||       1. Display BST              ||"<<endl;
-        cout<<"||       2. Swap all nodes           ||"<<endl;
-        cout<<"||       3. Height of tree           ||"<<endl;
-        cout<<"||       4. Number of leaf nodes     ||"<<endl;
-        cout<<"||       5. Number of internal nodes ||"<<endl;
-        cout<<"||       6. Delete all nodes         ||"<<endl;
-        cout<<"||                                   ||"<<endl;
-        cout<<"======================================="<<endl;
-        cout<<"\nEnter your choice: ";
-        cin>>choice;
+        if(root == nullptr)
+            return;
         
-        switch(choice)
-        {
-            case 1:
-                cout<<"\n\t1. Recursive Inorder\n\t2. Iterative Inorder\n\t3. Recursive Preorder\n\t4. Iterative Preorder\n\t5. Recursive Postorder\n\t6. Iterative Postorder\n\tEnter your choice: ";
-                cin>>choice1;
-                switch(choice1)
-                {
-                    case 1:
-                        tree.rinorder(tree.root);
-                        break;
-                        
-                    case 2:
-                        tree.iinorder(tree.root);
-                        break;
-                        
-                    case 3:
-                        tree.rpreorder(tree.root);
-                        break;
-                        
-                    case 4:
-                        tree.ipreorder(tree.root);
-                        break;
-                        
-                    case 5:
-                        tree.rpostorder(tree.root);
-                        break;
-                        
-                    case 6:
-                        tree.ipostorder(tree.root);
-                        break;
-                        
-                    default:
-                        cout<<"Wrong Input!"<<endl;
-                }
-                break;
-                
-            case 2:
-                tree.nodeSwap(tree.root);
-                cout<<"Nodes swapped!, Inorder Display: "<<endl;
-                tree.iinorder(tree.root);
-                break;
-                
-            case 3:
-                cout<<"Height of tree: "<<tree.maxDepth(tree.root);
-                break;
-                
-            case 4:
-                cout<<"Number of leaf nodes: "<<tree.getLeafCount(tree.root)<<endl;
-                break;
-                
-            case 5:
-                cout<<"Number of internal nodes: "<<tree.getInternalCount(tree.root);
-                break;
-                
-            case 6:
-                tree.deleteTree(tree.root);
-                break;
-                
-            default:
-                cout<<"Wrong input!"<<endl;
-        }
-    
-        label:
-        cout<<"\nDo you want to perform another operation? (1/0): ";
-        cin>>flag;
-        if(flag == 1)
-            continue;
-        else if(flag == 0)
-            break;
-        else
-        {
-            cout<<"Wrong input, try again!";
-            goto label;
-        }
-    }
-    
-    // Copying the binary tree
-    // uses operator "="
-    BinaryTree Tree2 = tree;
-    
-    return 0;
-}
-
-
-Node* BinaryTree::buildTree(Node *root)
-{
-    cout<<"Enter data for node (-1 indicates no data): ";
-    int d;
-    cin>>d;
-    root = new Node(d);
-    
-    if(d == -1)
-        return NULL;
-    
-    cout<<"Enter data to the left of "<<d<<" ";
-    root->left = buildTree(root->left);
-    cout<<"Enter data to the right of "<<d<<" ";
-    root->right = buildTree(root->right);
-    return root;
-}
-
-void BinaryTree::nodeSwap(Node *root)
-{
-    if(root) // If root is not NULL
-    {
         if(root->left || root->right) // If either of left or right of root exists
         {
             Node *temp = root->left;
             root->left = root->right;
             root->right = temp;
         }
-        nodeSwap(root->right); // Continue in right subtree
-        nodeSwap(root->left);  // Continue in left subtree
+        rswapAllNodes(root->right); // Continue in right subtree
+        rswapAllNodes(root->left);  // Continue in left subtree
     }
-}
 
-void BinaryTree::rpostorder(Node *root)
-{
-    if(root == NULL)
-        return;
+    void iswapAllNodes(Node* root) {
+        if (root == nullptr)
+            return;
 
-    rpostorder(root->left);
-    rpostorder(root->right);
-    cout<<root->data<<" ";
-}
+        std::stack<Node*> nodeStack;
+        nodeStack.push(root);
 
-void BinaryTree::rpreorder(Node *root)
-{
-    if(root == NULL)
-        return;
+        while (!nodeStack.empty()) {
+            Node* current = nodeStack.top();
+            nodeStack.pop();
 
-    cout<<root->data<<" ";
-    rpreorder(root->left);
-    rpreorder(root->right);
-}
+            if (current->left || current->right) {
+                Node* temp = current->left;
+                current->left = current->right;
+                current->right = temp;
+            }
 
-void BinaryTree::rinorder(Node *root)
-{
-    if(root == NULL)
-        return;
+            if (current->right)
+                nodeStack.push(current->right);
 
-    rinorder(root->left);
-    cout<<root->data<<" ";
-    rinorder(root->right);
-}
-
-void BinaryTree::iinorder(Node *root)
-{
-    stack<Node*> s;
-    Node *curr = root;
-    while(!s.empty() or curr!=NULL)
-    {
-        while(curr!=NULL)
-        {
-            s.push(curr);
-            curr = curr->left;
+            if (current->left)
+                nodeStack.push(current->left);
         }
-        curr = s.top();
-        s.pop();
-        cout<<curr->data<<" ";
-        curr = curr->right;
     }
-}
 
-void BinaryTree::ipreorder(Node *root)
-{
-    if (root == NULL)
-        return;
-    stack<Node*> nodeStack;
-    nodeStack.push(root);
- 
-    while (nodeStack.empty() == false) {
-        Node* node = nodeStack.top();
-        cout<<node->data<<" ";
-        nodeStack.pop();
-        if (node->right)
-            nodeStack.push(node->right);
-        if (node->left)
-            nodeStack.push(node->left);
-    }
-}
+    Node* rClone(Node *root) {
+        if(root == nullptr)
+            return nullptr;
 
-void BinaryTree::ipostorder(Node *root)
-{
-    // 2 Stack method
-    stack<Node*> s1, s2;
-    s1.push(root);
-    while(!s1.empty())
-    {
-        Node *t = s1.top();
-        s1.pop();
-        s2.push(t);
-        if(t->right)
-            s1.push(t->right);
-        if(t->left)
-            s1.push(t->left);
-    }
-    while(!s2.empty())
-    {
-        cout<<s2.top()->data<<" ";
-        s2.pop();
-    }
-}
+        Node *rootCopy = new Node(root->data);
+        rootCopy->right = rClone(root->right);
+        rootCopy->left = rClone(root->left);
 
-int BinaryTree::maxDepth(Node* root)
-{
-    if (root == NULL)
-        return 0;
-    else {
-        // Compute the depth of each subtree
-        int lDepth = maxDepth(root->left);
-        int rDepth = maxDepth(root->right);
- 
-        // Using the larger depth
-        if (lDepth > rDepth)
-            return (lDepth + 1);
+        return root;
+    }
+
+    Node* iClone(Node* root) {
+        if (root == nullptr)
+            return nullptr;
+
+        stack<Node*> nodeStack;
+        unordered_map<Node*, Node*> cloneMap;
+
+        Node* rootCopy = new Node(root->data);
+        cloneMap[root] = rootCopy;
+        nodeStack.push(root);
+
+        while (!nodeStack.empty()) {
+            Node* current = nodeStack.top();
+            nodeStack.pop();
+
+            Node* currentCopy = cloneMap[current];
+
+            if (current->right) {
+                Node* rightCopy = new Node(current->right->data);
+                currentCopy->right = rightCopy;
+                cloneMap[current->right] = rightCopy;
+                nodeStack.push(current->right);
+            }
+
+            if (current->left) {
+                Node* leftCopy = new Node(current->left->data);
+                currentCopy->left = leftCopy;
+                cloneMap[current->left] = leftCopy;
+                nodeStack.push(current->left);
+            }
+        }
+
+        return rootCopy;
+    }
+
+    int rHeight(Node *node) {
+        if(node == nullptr)
+            return 0;
+
+        int l = rHeight(node->left);
+        int r = rHeight(node->right);
+
+        return max(l,r) + 1;
+    }
+
+    int iHeight(Node* root) {
+        if (root == nullptr)
+            return 0;
+
+        queue<Node*> nodeQueue;
+        nodeQueue.push(root);
+        int height = 0;
+
+        while (!nodeQueue.empty()) {
+            int size = nodeQueue.size();
+
+            while (size > 0) {
+                Node* current = nodeQueue.front();
+                nodeQueue.pop();
+
+                if (current->left)
+                    nodeQueue.push(current->left);
+
+                if (current->right)
+                    nodeQueue.push(current->right);
+
+                size--;
+            }
+
+            height++;
+        }
+
+        return height;
+    }
+
+    int rLeafCount(Node *root) {
+        if(root == NULL)
+            return 0;
+        // Condition for leaf Node
+        else if(root->left == NULL and root->right == NULL)
+            return 1;
         else
-            return (rDepth + 1);
+            return rLeafCount(root->right) + rLeafCount(root->left);
     }
-}
 
-int BinaryTree::getLeafCount(Node *root)
-{
-    if(root == NULL)
-        return 0;
-    // Condition for leaf Node
-    else if(root->left == NULL and root->right == NULL)
-        return 1;
-    else
-        return getLeafCount(root->right) + getLeafCount(root->left);
-}
+    int iLeafCount(Node* root) {
+        if (root == nullptr)
+            return 0;
 
-int BinaryTree::getInternalCount(Node *root)
-{
-    if(root == NULL or (root->right == NULL and root->left == NULL))
-        return 0;
-    else return 1 + getInternalCount(root->left) + getInternalCount(root->right);
-}
+        stack<Node*> nodeStack;
+        nodeStack.push(root);
+        int leafCount = 0;
 
-void BinaryTree::deleteTree(Node* root)
-{
-    if (root == NULL) return;
+        while (!nodeStack.empty()) {
+            Node* current = nodeStack.top();
+            nodeStack.pop();
 
-    deleteTree(root->left);
-    deleteTree(root->right);
+            if (current->left == nullptr && current->right == nullptr)
+                leafCount++;
 
-    cout << "\n Deleting node: " << root->data;
-    delete root;
-}
+            if (current->right)
+                nodeStack.push(current->right);
 
-Node* BinaryTree::clone(Node *root) {
-    if(root == nullptr)
-        return nullptr;
+            if (current->left)
+                nodeStack.push(current->left);
+        }
 
-    Node *root_copy = new Node(root->data);
+        return leafCount;
+    }
 
-    root_copy->right = clone(root_copy->right);
-    root_copy->left = clone(root_copy->left);
+    void rDeleteTree(Node* root) {
+        if (root == NULL) return;
 
-    return root_copy;
+        rDeleteTree(root->left);
+        rDeleteTree(root->right);
+
+        cout << "\n Deleting node: " << root->data;
+        delete root;
+    }
+
+    void iDeleteTree(Node* root) {
+        if (root == nullptr)
+            return;
+
+        std::stack<Node*> nodeStack;
+        nodeStack.push(root);
+
+        while (!nodeStack.empty()) {
+            Node* current = nodeStack.top();
+            nodeStack.pop();
+
+            if (current->right)
+                nodeStack.push(current->right);
+
+            if (current->left)
+                nodeStack.push(current->left);
+
+            cout << "\n Deleting node: " << current->data;
+            delete current;
+        }
+    }
+
+    void rpreorder(Node *root)
+    {
+        if(root == NULL)
+            return;
+
+        cout<<root->data<<" ";
+        rpreorder(root->left);
+        rpreorder(root->right);
+    }
+
+    void rinorder(Node *root)
+    {
+        if(root == NULL)
+            return;
+
+        rinorder(root->left);
+        cout<<root->data<<" ";
+        rinorder(root->right);
+    }
+
+    void rpostorder(Node *root)
+    {
+        if(root == NULL)
+            return;
+
+        rpostorder(root->left);
+        rpostorder(root->right);
+        cout<<root->data<<" ";
+    }
+
+    public: 
+
+    Node *root = nullptr;
+    
+    BT() {
+        cout<<"Enter Data for root"<<endl;
+        buildTree(root);
+    }
+
+    void operator = (BT &Tree) {
+        this->root = iClone(Tree.root);
+    }
+
+    void iinorder() {
+        Node *curr = root;
+        stack<Node*> Stack;
+        while(!Stack.empty() or curr != nullptr) {
+            while(curr != nullptr) {
+                Stack.push(curr);
+                curr = curr->left;
+            }
+            curr = Stack.top();
+            Stack.pop();
+            cout<<curr->data<<" ";
+            curr = curr->right;
+        }
+    }
+
+    void ipreorder() {
+        if(root == nullptr)
+            return;
+
+        stack<Node*> Stack;
+        Stack.push(root);
+        while(!Stack.empty()) {
+            Node *poppedNode = Stack.top();
+            Stack.pop();
+            cout<<poppedNode->data<<" ";
+            if(poppedNode->right)
+                Stack.push(poppedNode->right);
+            if(poppedNode->left)
+                Stack.push(poppedNode->left);
+        }
+    }
+
+    void ipostorder() {
+        stack<Node*> s1, s2;
+        s1.push(root);
+        while(!s1.empty()) {
+            Node *temp = s1.top();
+            s1.pop();
+            s2.push(temp);
+            if(temp->right)
+                s1.push(temp->right);
+            if(temp->left)
+                s1.push(temp->left);
+        }
+        while(!s2.empty()) {
+            cout<<s2.top()->data<<" ";
+            s2.pop();
+        }
+    }
+};
+
+int main() {
+    BT Tree;
+    return 0;
 }
