@@ -100,16 +100,6 @@ class BST
             display(t->right);
     }
     
-    int min_value() {
-        Node *temp;
-        temp = root;
-
-        while(temp->left != NULL)
-            temp = temp->left;
-
-        return temp->data;
-    }
-    
     int max_value() {
         Node *temp;
         temp = root;
