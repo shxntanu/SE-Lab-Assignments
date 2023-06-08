@@ -1,5 +1,5 @@
 /*
-Credits - Shubham Panchal (GitHub -- @shubham0204)
+Source - Shubham Panchal (GitHub -- @shubham0204)
 
 Implement the Heap Sort algorithm demonstrating the Heap / Shell data structure with 
 modularity of programming language.
