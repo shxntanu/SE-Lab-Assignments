@@ -175,12 +175,12 @@ public:
     }
     
     void deleteRecord(int empID) {
-        fstream temp;
-        temp.open("temp", ios::app);
         int loc = table.searchHT(empID);
         if(loc == -1)
             cout<<"No such record exists to delete"<<endl;
         else {
+            fstream temp;
+            temp.open("temp", ios::out);
             file.open(filename, ios::in);
             while(!file.eof()) {
                 file.read(reinterpret_cast<char*>(&E), sizeof(E));
