@@ -2,201 +2,205 @@
 Implementation of a direct access file -Insertion and deletion of a record from a Direct Access File.
 */
 
-#include<bits/stdc++.h>
+#include <iostream>
+#include <string>
+#include <fstream>
 using namespace std;
 
 class Employee {
-    int empID;          // Employee ID
-    int location;       // Location in the file
-
-    Employee()
-    {
-        empID = 0;
-        location = 0;
+    string name;
+    string address;
+    int empID;
+    int loc;
+    
+    Employee() {
+        name = address = "";
+        loc = empID = 0;
     }
-
+    
+    bool isEmpty() {
+        return empID == 0;
+    }
+    
+    void display() {
+        cout<<name<<" "<<address<<" "<<empID<<endl;
+    }
+    
     friend class Hashtable;
+    friend class MyFile;
 };
 
 class Hashtable {
     Employee *employees;
     int tableSize;
-
-public:
-    Hashtable() {
-        // Function to initialize the hash table
-        cout<<"Enter number of employees: ";
-        cin>>tableSize;
-        employees = new Employee[tableSize];
-
-        for (int i = 0; i < tableSize; i++)
-        {
-            employees[i].empID = 0;
-            employees[i].location = 0;
-        }
-    }
-
-    void showHT() {
-        // Function to display the hash table
-        for (int i = 0; i < tableSize; i++)
-        {
-            cout << i+1 << ". " << employees[i].empID << " " << employees[i].location<<endl;
-        }
-    }
-
-    int Hash(int empID) {
-        // Hash function to determine the index based on the employee ID
+    
+    int hash(int empID) {
         return empID % tableSize;
     }
-
-    void insertHT(int empID, int loc) {
-        // Function to insert a record into the hash table
-
-        int index;
-
-        index = Hash(empID);
-
-        if (employees[index].location == 0)
-        {
-            employees[index].empID = empID;
-            employees[index].location = loc;
-        }
-        else
-        {
-            do
-            {
-                index = ((index + 1) % tableSize);
-            } while (employees[index].location != 0);
-            employees[index].empID = empID;
-            employees[index].location = loc;
+    
+public:
+    
+    Hashtable() {
+        cout<<"Enter max number of employees: ";
+        cin>>tableSize;
+        employees = new Employee[tableSize];
+        for(int i=0;i<tableSize;i++) {
+            employees[i] = Employee();
         }
     }
-
-    int searchHT() {
-        // Function to search for a record in the hash table
-        int empID, index;
-
-        cout << "\n\t Enter Employee ID: ";
-        cin >> empID;
-
-        index = Hash(empID);
-
-        if (employees[index].empID == empID)
-        {
-            return employees[index].location;
+    
+    void insertHT( Employee emp ) {
+        int index = hash(emp.empID);
+        if(employees[index].isEmpty()) {
+            employees[index] = emp;
         }
-        else
-        {
-            do
-            {
-                index = ((index + 1) % tableSize);
-            } while (employees[index].empID != empID);
-
-            return employees[index].location;
+        else {
+            int curr = index;
+            while(!employees[index].isEmpty())
+                curr = (curr+1)%tableSize;
+            employees[curr] = emp;
+        }
+    }
+    
+    void showHT() {
+        for(int i=0;i<tableSize;i++) {
+            cout.width(7);
+            cout<<employees[i].empID;
+            cout<<"\t";
+            cout.width(5);
+            cout<<employees[i].loc<<endl;
+        }
+    }
+    
+    void deleteHT(int empID) {
+        int index = hash(empID);
+        if(employees[index].empID == empID)
+            employees[index] = Employee();
+        else {
+            int curr = index;
+            while( employees[index].empID != empID)
+                curr = (curr+1)%tableSize;
+            employees[curr] = Employee();
+        }
+    }
+    
+    int searchHT(int empID) {
+        int index = hash(empID);
+        if(employees[index].empID == empID) {
+            return employees[index].loc;
+        }
+        else {
+            int curr = index, passes = 0;
+            while( employees[index].empID != empID and passes != tableSize) {
+                curr = (curr+1)%tableSize;
+                passes++;
+            }
+            if(passes != tableSize)
+                return employees[curr].loc;
+            else
+                return  -1;
         }
     }
 };
 
-class MyFile
-{
-    char buffer[40], fileName[10];
-    int empId, count;
-    string name, address;
-    fstream file;
-    Hashtable HT;
-
+class MyFile {
+    char buffer[40], filename[20];
+    fstream file; int empCount;
+    Hashtable table;
+    Employee E;
+    
 public:
-
-    MyFile()
-    {
-        empId = 0;
-        count = 0;
-        name = '\0';
-        address = '\0';
-        cout << "Enter name of file : ";
-        cin >> fileName;
-
-        ofstream File;
-        File.open(fileName);
-        if(File)
-        {
-            cout<<"\nFile opened Successfully"<<endl;
-            File.close();
+    
+    MyFile() {
+        cout<<"Enter file name: ";
+        cin>>filename;
+        
+        file.open(filename, ios::out);
+        if(file)
+            cout<<"File opened successfully"<<endl;
+        else
+            cout<<"Error in file opening"<<endl;
+        file.close();
+    }
+    
+    void addRecord() {
+        file.open(filename, ios::app);
+        if(file) {
+            cout<<"Enter employee name: ";
+            cin>>E.name;
+            cout<<"Enter employee ID: ";
+            cin>>E.empID;
+            cout<<"Enter employee address: ";
+            cin>>E.address;
+            cout<<"Location: "<<file.tellp()<<endl;
+            E.loc = file.tellp();
+            table.insertHT(E);
+            file.write(reinterpret_cast<char*>(&E), sizeof(E));
         }
-        else
-            cout<<"\nFile creation Error"<<endl;
+        else {
+            cout<<"Error";
+        }
+        file.close();
     }
-
-    ~MyFile()
-    {
-        remove("file");
-    }
-
-    void writeFile() {
-        file.open(fileName, ios::out);
-
-        if (!file)
-            cout << "\n\nThere is an Error Opening file..." << endl;
-        else
-        {
-            cout << "Enter number of records : ";
-            cin >> count;
-            for (int i = 0; i < count; i++)
-            {
-                cout << "emp number : ";
-                cin >> empId;
-                cout << "Name : ";
-                cin >> name;
-                cout << "Address : ";
-                cin >> address;
-                cout << "Location : " << file.tellp() << endl;
-                HT.insertHT(empId, file.tellp());
-                file << empId << " " << name << " " << address << endl;
+    
+    void readRecord() {
+        file.open(filename, ios::in);
+        if(!file)
+            cout<<"Error opening file"<<endl;
+        else {
+            int empID;
+            cout<<"Enter employee ID to read: ";
+            cin>>empID;
+            int loc = table.searchHT(empID);
+            if(loc == -1)
+                cout<<"No such record exists."<<endl;
+            else {
+                file.seekg(loc, ios::beg);
+                file.read(reinterpret_cast<char*>(&E), sizeof(E));
+                E.display();
             }
         }
         file.close();
     }
-
-    void readFile() {
-        file.open(fileName, ios::in);
-        if (!file)
-            cout << "\n\nError 404 File Not Found..." << endl;
-        else
-        {
-            int i = 0;
-            while (!file.eof())
-            {
-                file.getline(buffer, 40);
-                cout << "Record " << i << " : " << buffer << endl;
-                i++;
+    
+    void deleteRecord() {
+        int empID;
+        fstream temp;
+        temp.open("temp", ios::app);
+        cout<<"Enter the employee ID to delete: ";
+        cin>>empID;
+        int loc = table.searchHT(empID);
+        if(loc == -1)
+            cout<<"No such record exists to delete"<<endl;
+        else {
+            file.open(filename, ios::in);
+            while(!file.eof()) {
+                file.read(reinterpret_cast<char*>(&E), sizeof(E));
+                if(E.empID == empID)
+                    continue;
+                E.loc = temp.tellp();
+                temp.write(reinterpret_cast<char*>(&E), sizeof(E));
             }
+            file.close();
+            temp.close();
+            remove(filename);
+            rename("temp", filename);
+            table.deleteHT(empID);
         }
-        file.close();
-        cout << "\n\nHash Table : " << endl;
-        HT.showHT();
-    }
-
-    void searchRecord() {
-        file.open(fileName, ios::in);
-        if (!file)
-            cout << "\n\nError 404 File Not Found..." << endl;
-        else
-        {
-            int loc = HT.searchHT();
-            file.seekg(loc, ios::beg);
-            file.getline(buffer, 40);
-            cout << "Record Found" << endl
-                 << buffer;
-        }
-        file.close();
     }
 };
 
 int main() {
     MyFile File;
-
-    File.writeFile();
-    File.readFile();
-    File.searchRecord();
+    File.addRecord();
+    File.addRecord();
+    File.addRecord();
+    File.addRecord();
+    
+    File.readRecord();
+    
+    File.deleteRecord();
+    
+    File.readRecord();
     return 0;
 }
