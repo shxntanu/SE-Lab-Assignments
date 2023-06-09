@@ -159,7 +159,6 @@ public:
                 file.read(reinterpret_cast<char*>(&E), sizeof(E));
                 E.display();
             }
-            cout<<"\nRecord deleted!"<<endl;
         }
         file.close();
     }
@@ -187,6 +186,7 @@ public:
             remove(filename);
             rename("temp", filename);
             table.deleteHT(empID);
+            cout<<"\nRecord deleted!"<<endl;
         }
     }
 };
