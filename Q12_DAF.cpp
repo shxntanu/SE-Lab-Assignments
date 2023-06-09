@@ -23,7 +23,7 @@ class Employee {
     }
     
     void display() {
-        cout<<name<<" "<<address<<" "<<empID<<endl;
+        cout<<name<<" "<<address<<" "<<empID<<" "<<loc<<endl;
     }
     
     friend class Hashtable;
@@ -104,8 +104,8 @@ public:
 };
 
 class MyFile {
-    char filename[20];
-    fstream file;
+    char buffer[40], filename[20];
+    fstream file; int empCount;
     Hashtable table;
     Employee E;
     
@@ -159,6 +159,7 @@ public:
                 file.read(reinterpret_cast<char*>(&E), sizeof(E));
                 E.display();
             }
+            cout<<"\nRecord deleted!"<<endl;
         }
         file.close();
     }
