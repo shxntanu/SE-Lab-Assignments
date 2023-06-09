@@ -104,8 +104,8 @@ public:
 };
 
 class MyFile {
-    char buffer[40], filename[20];
-    fstream file; int empCount;
+    char filename[20];
+    fstream file;
     Hashtable table;
     Employee E;
     
