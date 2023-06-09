@@ -1,208 +1,213 @@
-#include <iostream>
+/*
+Create an inordered threaded binary tree. Perform inorder, preorder traversals without recursion and deletion of a node.
+ Analyze time and space complexity of algorithm.
+*/
+
+#include <bits/stdc++.h>
 using namespace std;
 
-class Node{
+class Node {
+    int data;
+    bool lt, rt;
     Node *left, *right;
-    int data, lthread, rthread;   
-    //thread -> 0  means thread present, 1 means child present
 
-public:
-    Node(int data){
-        this -> data = data;
-        this -> left = nullptr;
-        this -> right = nullptr;
-        this -> lthread = 0;
-        this -> rthread = 0;
+    Node(int d) {
+        data = d;
+        lt = rt = 0;
+        left = right = nullptr;
     }
 
     friend class TBST;
 };
 
-class TBST{
+class TBST {
+
     Node *head, *root;
 
-    Node *inOrderSuccessor(Node *node){
-        Node *current = node -> right;
-        if(node -> rthread == 1){
-            while(current -> lthread != 0){
-                current = current -> left;
-            }
+    Node* inSucc( Node *node ) {
+        if(node->rt == true)
+            return node->right;
+
+        node = node->right;
+        while(node->lt == false)
+            node = node->left;
+        return node;
+    }
+
+    Node* inPred(Node *node) {
+        if(node->lt == true)
+            return node->left;
+
+        node = node->left;
+        while(node->rt == false)
+            node = node->right;
+        return node;
+    }
+
+    Node* inOrderSuccessor(Node *node) {
+        Node *current = node->right;
+        if(node->rt == false) {
+            while(current->lt == false)
+                current = current->left;
         }
         return current;
     }
 
-    void deleteNode(Node *parent,Node *child){
-        if(child -> lthread == 1 && child -> rthread == 1){
-            Node *smallestRST = child -> right; //smallest in right subtree
-            while(smallestRST -> lthread == 1){
-                parent = smallestRST;
-                smallestRST = smallestRST -> left;
+    void del(Node *parent, Node *child) {
+        // leaf node
+        if(child->lt == true and child->rt == true) {
+            if(parent->right == child) {
+                parent->rt = true;
+                parent->right = child->right;
+                delete child;
             }
-            int temp = child -> data;
-            child -> data = smallestRST -> data;
-            smallestRST -> data = temp;
-
-            parent = child;
-            child = smallestRST;
-
-            if(child -> lthread == 1){
-                child -> left -> right = parent;
-                parent -> left = child -> left;
-            } 
-            else if(child -> rthread == 1){
-                parent -> right = child -> right;
+            else {
+                parent->lt = true;
+                parent->left = child->left;
+                delete child;
             }
-            
-            delete smallestRST;
         }
 
-        else if(child -> lthread == 0 && child -> rthread == 0){
-            if( parent -> left == child ) {
-				parent -> left = child -> left ;
-				parent -> lthread = child -> lthread ;
-			}
-			else if( parent -> right == child ) {
-				parent -> right = child -> right ;
-				parent -> rthread = child -> rthread ;
-			}
-			delete child ;
+        // left subtree
+        else if(child->lt == false) {
+            Node *gc = child->left;
+            Node *s = inSucc(child);
+            Node *p = inPred(child);
+
+            p->right = s;
+            if(parent->right == child)
+                parent->right = gc;
+            else 
+                parent->left = gc;
+            delete child;
         }
 
-        else{
-            if( child -> lthread == 1 && child -> rthread == 0 ) {
-				parent -> left = child -> left ;
-				child -> left -> right = parent ;
-			}
-			else if( child -> lthread == 0 && child -> rthread == 1 ) {
-				parent -> right = child -> right ;
-				child -> right -> left = parent ;
-			}
-			delete child ;
+        // right subtree
+        else if(child->rt = false){
+            Node *gc = child->right;
+            Node *s = inSucc(child);
+            Node *p = inPred(child);
+
+            s->left = p;
+            if(parent->right == child)
+                parent->right = gc;
+            else 
+                parent->left = gc;
+            delete child;
+        }
+
+        // two children
+        else {
+            Node *leftMost = child->right, *LMparent = child;
+            while(leftMost->lt == false) {
+                LMparent = leftMost;
+                leftMost = leftMost->left;
+            }
+
+            child->data = leftMost->data;
+
+            del(LMparent, leftMost);
         }
     }
 
-public:
-    TBST(){
-        this -> head = new Node(0);
-        this -> head -> lthread = 0;
-        this -> head -> rthread = 1;
-        this -> head -> left = this -> head;
-        this -> head -> right = this -> head;
+    public: 
 
-        this -> root = nullptr;
+    TBST () {
+        root = nullptr;
+
+        head = new Node(0);
+        head->lt = true;
+        head->rt = false;
+        head->left = head;
+        head->right = head;
     }
 
-    void insert(int data){
-        if(this -> root == nullptr){
-            this -> root = new Node(data);
-            this -> root -> lthread = 0;
-            this -> root -> left = this -> head;
-            this -> root -> rthread = 0;
-            this -> root -> right = this -> head;
-
-            this -> head -> lthread = 1;
-            this -> head -> left = this -> root;
+    void insert(int data) {
+        
+        // Tree empty
+        if(root == nullptr) {
+            root = new Node(data);
+            root->lt = root->rt = 1;
+            root->left = root->right = head;
+            head->left = root;
+            head->lt = false;
         }
-
-        else{
-            Node *current = this -> root;
-            Node *previous = nullptr;
-
-            while(true){
-                previous = current;
-                if(data < current -> data){
-                    if(current -> lthread == 1){
-                        current = current -> left;
+        
+        else {
+            Node *curr = root, *parent = nullptr;
+            while(true) {
+                parent = curr;
+                if(data > curr->data) {
+                    if(curr->rt == false) {
+                        curr = curr->right;
                     }
-                    else{
+                    else 
                         break;
-                    }
                 }
-                else{
-                    if(current -> rthread == 1){
-                        current = current -> right;
+                else {
+                    if(curr->lt == false) {
+                        curr = curr->left;
                     }
-                    else{
+                    else 
                         break;
-                    }
                 }
             }
 
             Node *newNode = new Node(data);
-            if(data < previous -> data){
-                newNode -> lthread = previous -> lthread;
-                newNode -> left = previous -> left;
-                newNode -> rthread = 0;
-                newNode -> right = previous;
-                previous -> lthread = 1;
-                previous -> left = newNode;
+            if(data > parent->data) {
+                newNode->rt = parent->rt;
+                newNode->right = parent->right;
+                newNode->lt = true;
+                newNode->left = parent;
+                parent->rt = false;
+                parent->right = newNode;
             }
-            else{
-                newNode -> rthread = previous -> rthread;
-                newNode -> right = previous -> right;
-                newNode -> lthread = 0;
-                newNode -> left = previous;
-                previous -> rthread = 1;
-                previous -> right = newNode;
+            else {
+                newNode->lt = parent->lt;
+                newNode->left = parent->left;
+                newNode->rt = true;
+                newNode->right = parent;
+                parent->lt = false;
+                parent->left = newNode;
             }
         }
     }
 
-    void inOrder(){
-        Node *current = this -> head;
-        while(true){
-            current = inOrderSuccessor(current);
-            if(current == this -> head){
+    void deletion( int key ) {
+        Node *curr = root, *prev = head;
+        if(curr == nullptr) {
+            cout<<"Tree empty"<<endl;
+            return;
+        }
+        while(curr->data != key) {
+            prev = curr;
+            if(key < curr->data) {
+                if(curr->lt == false) {
+                    curr = curr->left;
+                }
+                else
+                    break;
+            }
+            else {
+                if(curr->rt == false) {
+                    curr = curr->right;
+                }
+            }
+        }
+        del(prev, curr);
+    }
+
+    void inOrder() {
+        Node *curr = head;
+        while(true) {
+            curr = inOrderSuccessor(curr);
+            if(curr == head) {
                 cout<<endl;
                 return;
             }
-            cout<<current -> data<<" ";
+            cout<<curr->data<<" ";
         }
     }
-
-    void preOrder(){
-        int flag = 1;
-        Node *current = this -> root;
-
-        while(current != this -> head){
-            while(flag == 1){
-                cout<<current -> data<<" ";
-                if(current -> lthread == 1){
-                    current = current -> left;
-                }
-                else{
-                    break;
-                }
-            }
-            flag = current -> rthread;
-            current = current -> right;
-        }
-        cout<<endl;
-    }
-
-    void deletion( int val ) {
-		Node* current = this -> root; ;
-		Node* previous = this -> head ;
-
-		while( current -> data != val ) {
-			previous = current ;
-			if( val > current -> data ) {
-				if( current -> rthread == 1 ) {
-					current = current -> right ;
-				}
-				else { break; }
-			}
-			else {
-				if( current -> lthread == 1 ) {
-					current = current -> left ;
-				}
-				else {
-					break;
-				}
-			}
-		}
-		deleteNode( previous , current ) ;
-	}    
 };
 
 int main(){
@@ -216,7 +221,6 @@ int main(){
 	t.insert(80);
 	t.insert(75);
     t.inOrder();
-    t.preOrder();
 
     t.deletion(50);
     t.inOrder();
