@@ -84,6 +84,11 @@ public:
         }
     }
     
+    void nukeHT() {
+        for(int i=0;i<tableSize;i++)
+            employees[i] = Employee();
+    }
+    
     int searchHT(int empID) {
         int index = hash(empID);
         if(employees[index].empID == empID) {
@@ -99,6 +104,18 @@ public:
                 return employees[curr].loc;
             else
                 return  -1;
+        }
+    }
+    
+    void updateEntry(int empID, int newLoc) {
+        int index = hash(empID);
+        if(employees[index].empID == empID)
+            employees[index].loc = newLoc;
+        else {
+            int curr = index;
+            while( employees[index].empID != empID )
+                curr = (curr+1)%tableSize;
+            employees[curr].loc = newLoc;
         }
     }
 };
@@ -123,15 +140,12 @@ public:
         file.close();
     }
     
-    void addRecord() {
+    void addRecord(string n, int id, string a) {
         file.open(filename, ios::app);
         if(file) {
-            cout<<"Enter employee name: ";
-            cin>>E.name;
-            cout<<"Enter employee ID: ";
-            cin>>E.empID;
-            cout<<"Enter employee address: ";
-            cin>>E.address;
+            E.name = n;
+            E.empID = id;
+            E.address = a;
             cout<<"Location: "<<file.tellp()<<endl;
             E.loc = file.tellp();
             table.insertHT(E);
@@ -143,14 +157,11 @@ public:
         file.close();
     }
     
-    void readRecord() {
+    void readRecord(int empID) {
         file.open(filename, ios::in);
         if(!file)
             cout<<"Error opening file"<<endl;
         else {
-            int empID;
-            cout<<"Enter employee ID to read: ";
-            cin>>empID;
             int loc = table.searchHT(empID);
             if(loc == -1)
                 cout<<"No such record exists."<<endl;
@@ -163,12 +174,9 @@ public:
         file.close();
     }
     
-    void deleteRecord() {
-        int empID;
+    void deleteRecord(int empID) {
         fstream temp;
         temp.open("temp", ios::app);
-        cout<<"Enter the employee ID to delete: ";
-        cin>>empID;
         int loc = table.searchHT(empID);
         if(loc == -1)
             cout<<"No such record exists to delete"<<endl;
@@ -176,13 +184,16 @@ public:
             file.open(filename, ios::in);
             while(!file.eof()) {
                 file.read(reinterpret_cast<char*>(&E), sizeof(E));
-                if(E.empID == empID)
-                    continue;
-                E.loc = temp.tellp();
-                temp.write(reinterpret_cast<char*>(&E), sizeof(E));
+                if(E.empID == empID) {
+                    cout<<"Deleting Record"<<endl;
+                }
+                else {
+                    E.loc = temp.tellp();
+                    table.updateEntry(E.empID, E.loc);
+                    temp.write(reinterpret_cast<char*>(&E), sizeof(E));
+                }
             }
-            file.close();
-            temp.close();
+            file.close(); temp.close();
             remove(filename);
             rename("temp", filename);
             table.deleteHT(empID);
@@ -193,15 +204,19 @@ public:
 
 int main() {
     MyFile File;
-    File.addRecord();
-    File.addRecord();
-    File.addRecord();
-    File.addRecord();
+    File.addRecord("Durvesh", 21381, "Mumbai");
+    File.addRecord("Shantanu", 21382, "Pune");
+    File.addRecord("Riya", 21383, "Nasik");
+    File.addRecord("Atharva", 21384, "Baner");
+    File.addRecord("Aarti", 21385, "Balewadi");
+    File.addRecord("Riddhi", 21467, "Hadapsar");
     
-    File.readRecord();
+    File.readRecord(21383);
     
-    File.deleteRecord();
+    File.deleteRecord(21384);
     
-    File.readRecord();
+    File.readRecord(21467);
+    File.readRecord(21384);
+    
     return 0;
 }
