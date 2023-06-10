@@ -102,7 +102,7 @@ class BT {
         rootCopy->right = rClone(root->right);
         rootCopy->left = rClone(root->left);
 
-        return root;
+        return rootCopy;
     }
 
     Node* iClone(Node* root) {
