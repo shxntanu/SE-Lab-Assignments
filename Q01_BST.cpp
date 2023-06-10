@@ -115,10 +115,7 @@ class BST {
                 root->right = deleteSubTree(root->right, temp->data);
             }
         }
-
-        if( root == nullptr )
-            return root;
-
+        
         return root;
     }
 
