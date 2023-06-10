@@ -45,13 +45,6 @@ class BST {
         return max(l,r) + 1;
     }
 
-    Node* minValueNode(Node *root) {
-        Node *curr = root;
-        while(curr->left != nullptr)
-            curr = curr->left;
-        return curr;
-    }
-
     void swapAllNodes(Node *node) {
         if(node == nullptr)
             return;
@@ -80,6 +73,53 @@ class BST {
             cout<<curr->data<<" ";
             curr = curr->right;
         }
+    }
+
+    Node* minValueNode (Node *node) {
+        Node *curr = node;
+        while(curr->left != nullptr)
+            curr = curr->left;
+
+        return curr;
+    }
+
+    Node* deleteSubTree(Node *root, int key) {
+
+        if(key > root->data)
+            root->right = deleteSubTree(root->right, key);
+
+        else if(key < root->data)
+            root->left = deleteSubTree(root->left, key);
+
+        else {
+            if(root->right == nullptr or root->left == nullptr) {
+                Node *temp = root->left ? root->left : root->right;
+
+                if(temp == nullptr) {
+                    temp = root;
+                    root = nullptr;
+                }
+
+                else {
+                    root->data = temp->data;
+                    root->left = root->right = nullptr;
+                }
+
+                delete temp;
+            }
+
+            else {
+                Node *temp = minValueNode(root->right);
+                root->data = temp->data;
+
+                root->right = deleteSubTree(root->right, temp->data);
+            }
+        }
+
+        if( root == nullptr )
+            return root;
+
+        return root;
     }
 
     public: 
@@ -136,12 +176,16 @@ class BST {
         cout<<"\nNode does not exist"<<endl;
     }
 
+    void del(int key){
+        root = deleteSubTree(root, key);
+    }
+
     void getHeight() {
-        cout<<"\nNumber of nodes in the longest path from root are: "<<height(root);
+        cout<<"\nNumber of nodes in the longest path from root are: "<<height(root) + 1<<endl;
     }
 
     void getMinValue() {
-        cout<<"\nMinimum value in the tree: "<<minValueNode(root)->data;
+        cout<<"\nMinimum value in the tree: "<<minValueNode(root)->data<<endl;
     }
 
     void getAscending() {
@@ -169,8 +213,11 @@ int main() {
     tree.insert(100);
 
     tree.getAscending();
+
+    tree.del(10);
+
+    tree.getAscending();
     tree.getHeight();
-    tree.printSwapped();
 
     BST tree2;
 
@@ -186,7 +233,6 @@ int main() {
 
     tree2.getAscending();
     tree2.getHeight();
-    tree2.search(12);
     
     return 0;
 }
