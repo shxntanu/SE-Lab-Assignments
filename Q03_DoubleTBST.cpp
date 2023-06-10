@@ -192,6 +192,8 @@ class TBST {
                 if(curr->rt == false) {
                     curr = curr->right;
                 }
+		else 
+		    break;
             }
         }
         del(prev, curr);
